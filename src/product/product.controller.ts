@@ -1,8 +1,6 @@
-import { BadRequestException, Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
-import {  FilesInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
 import { PatchProductDto } from './dto/patch-product.dto';
 
 @Controller('producto')
