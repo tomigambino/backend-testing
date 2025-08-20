@@ -1,0 +1,61 @@
+@startuml
+class sale{
+    +id
+    +saleDate
+    +customer
+    +saleDetail
+    +deposit
+    +total 
+    +appliedDiscount
+    +saleStatus
+    +estimatedDeliveryDate
+}
+
+class saleDetail{
+    +id
+    +sale
+    +product
+    +quantity
+    +color 
+    +productDescription
+    +totalDetail
+}
+
+class saleStatus{
+    +id 
+    +value 
+}
+
+class product{
+    +id
+    +productType
+    +name 
+    +description
+    +printDuration
+    +weight
+    +publishedPrice
+    +isActive
+}
+
+class productType{
+    +id
+    +name
+    +description
+}
+
+class customer{
+    +id
+    +firstName 
+    +lastName
+    +phone 
+    +email
+    +registrationDate
+}
+
+sale o-> "1..*" saleDetail
+saleDetail --> "1" product
+product -> "1" productType
+sale --> "1" saleStatus
+customer "1" <- sale
+
+@enduml

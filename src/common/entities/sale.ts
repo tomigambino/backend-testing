@@ -1,4 +1,4 @@
-import { PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, OneToMany, JoinColumn, OneToOne, Entity } from "typeorm";
+import { PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, OneToMany, JoinColumn, Entity } from "typeorm";
 import { CustomerEntity } from "./customer.entity";
 import { SaleStatusEntity } from "./saleStatus";
 import { SaleDetailEntity } from "./saleDetail";

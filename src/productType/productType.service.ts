@@ -15,7 +15,6 @@ export class ProductTypeService {
     async createProductType(createProductType: CreateProductTypeDto): Promise<ProductTypeEntity> {
         const productType = this.productTypeRepository.create({
             name: createProductType.name,
-            description: createProductType.description,
         });
         await this.productTypeRepository.save(productType);
         return productType;

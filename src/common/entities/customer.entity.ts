@@ -1,14 +1,9 @@
-import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { CustomerTypeEntity } from "./customerType";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('cliente')
 export class CustomerEntity extends BaseEntity{
     @PrimaryGeneratedColumn({ name: 'id' })
     id: number;
-
-    @ManyToOne(() => CustomerTypeEntity)
-    @JoinColumn({ name: 'tipo_cliente' })
-    customerType: CustomerTypeEntity;
 
     @Column({ name: 'nombre' })
     firstName: string;
