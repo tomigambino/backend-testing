@@ -38,13 +38,10 @@ export class SaleStateService {
         return saleState;
     }
 
-    async updateSaleState(id: number, updateSaleStateDto: CreateSaleStateDto): Promise<SaleStatusEntity | null> {
-        const saleState = await this.saleStateEntity.findOne({ where: { id: id } });
-        if (!saleState) {
-            throw new NotFoundException("Sale State Not Found");
-        }
+    async updateSaleState(id: number, updateSaleStateDto: CreateSaleStateDto): Promise<SaleStatusEntity> {
+        await this.findSaleStateById(id); // Comprobamos que exista un estado con ese id
         await this.saleStateEntity.update(id, updateSaleStateDto);
-        return this.saleStateEntity.findOne({ where: { id: id } });
+        return this.findSaleStateById(id);
     }
 
     async deleteSaleState(id: number) {
