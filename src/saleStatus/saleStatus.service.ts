@@ -45,7 +45,7 @@ export class SaleStateService {
         }
         await this.saleStateEntity.update(id, updateSaleStateDto);
         return this.saleStateEntity.findOne({ where: { id: id } });
-        }
+    }
 
     async deleteSaleState(id: number) {
         const { affected } = await this.saleStateEntity.delete(id);
