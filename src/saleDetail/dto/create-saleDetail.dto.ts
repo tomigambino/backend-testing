@@ -16,9 +16,5 @@ export class CreateSaleDetailDto {
     @IsString({ message: 'El color debe ser un texto.' })
     color: string;
 
-    @IsNotEmpty({ message: 'La descripción del producto es obligatoria.' })
-    @IsString({ message: 'La descripción del producto debe ser un texto.' })
-    productDescription: string;
-
     //El total del detalle de venta se calcula en el servicio
 }

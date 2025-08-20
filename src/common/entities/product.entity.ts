@@ -16,14 +16,11 @@ export class ProductEntity extends BaseEntity{
     @Column({ name: 'descripcion' })
     description: string;
 
-    @Column({ name: 'horas_impresion' })
-    printDuration: number;
-
-    @Column({ name: 'peso' })
-    weight: number;
+    @Column()
+    price: number;
 
     @Column()
-    publishedPrice: number;
+    stock: number;
 
     @Column()
     isActive: boolean;

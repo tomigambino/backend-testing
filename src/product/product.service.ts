@@ -22,9 +22,8 @@ export class ProductService {
             productType: productType,
             name: createProductDto.name,
             description: createProductDto.description,
-            printDuration: createProductDto.printDuration,
-            weight: createProductDto.weight,
-            publishedPrice: createProductDto.publishedPrice,
+            price: createProductDto.price,
+            stock: createProductDto.stock,
             isActive: createProductDto.isActive
             })
 

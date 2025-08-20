@@ -21,13 +21,12 @@ export class SaleDetailService {
         const product = await this.productService.findProductById(productId);
 
         // Calculamos el total del detalle de venta
-        const detailTotal = this.calculateTotalSaleDetail(createSaleDetailDto.quantity, product.publishedPrice);
+        const detailTotal = this.calculateTotalSaleDetail(createSaleDetailDto.quantity, product.price);
 
         const newSaleDetail = this.saleDetailRepository.create({
             product: product,
             quantity: createSaleDetailDto.quantity,
             color: createSaleDetailDto.color,
-            productDescription: createSaleDetailDto.productDescription,
             totalDetail: detailTotal
         });
 
@@ -63,7 +62,7 @@ export class SaleDetailService {
         saleDetail.product = product;
 
         // Calculamos el total del detalle y lo asignamos
-        saleDetail.totalDetail = this.calculateTotalSaleDetail(createSaleDetailDto.quantity, product.publishedPrice);
+        saleDetail.totalDetail = this.calculateTotalSaleDetail(createSaleDetailDto.quantity, product.price);
 
         Object.assign(saleDetail, createSaleDetailDto)
 
@@ -90,13 +89,9 @@ export class SaleDetailService {
             saleDetail.color = updateSaleDetailDto.color;
         }
 
-        if (updateSaleDetailDto.productDescription) {
-            saleDetail.productDescription = updateSaleDetailDto.productDescription;
-        }
-
         // Calculamos el total del detalle
         if (updateTotal) {
-            const detailTotal = this.calculateTotalSaleDetail(saleDetail.quantity, saleDetail.product.publishedPrice);
+            const detailTotal = this.calculateTotalSaleDetail(saleDetail.quantity, saleDetail.product.price);
             saleDetail.totalDetail = detailTotal;
         }
 

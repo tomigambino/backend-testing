@@ -1,55 +1,80 @@
-@startuml
+@startuml Diagrama de Clases - Venta
 class sale{
-    +id
-    +saleDate
-    +customer
-    +saleDetail
-    +deposit
-    +total 
-    +appliedDiscount
-    +saleStatus
-    +estimatedDeliveryDate
+    -id
+    -saleDate
+    -customer: customer
+    -saleDetail: saleDetail
+    -deposit
+    -total 
+    -appliedDiscount
+    -saleStatus
+    -estimatedDeliveryDate
+
+    +createSale()
+    +findSales()
+    +findSalesByPagination()
+    +findSalesById()
+    +partialUpdateSale()
+    +deleteSale()
+    +changeNextStatus()
+    +calculateTotalSale()
 }
 
 class saleDetail{
-    +id
-    +sale
-    +product
-    +quantity
-    +color 
-    +productDescription
-    +totalDetail
+    -id
+    -product: product
+    -quantity
+    -color 
+    -totalDetail
+
+    +knowProduct()
+    +createSaleDetail()
+    +findAllSaleDetails()
+    +findSaleDetailById()
+    +updateSaleDetail()
+    +partialUpdateSaleDetail()
+    +deleteSaleDetail()
+    +calculateTotalSaleDetail()
 }
 
 class saleStatus{
-    +id 
-    +value 
+    -id 
+    -value 
+
+    +createSaleState()
+    +findAllSaleStates()
+    +findSaleStateById()
+    +findSaleStateByName()
+    +updateSaleState()
+    +deleteSaleState()
+    +getNextSaleStatus()
 }
 
 class product{
-    +id
-    +productType
-    +name 
-    +description
-    +printDuration
-    +weight
-    +publishedPrice
-    +isActive
+    -id
+    -productType: productType
+    -name 
+    -description
+    -price
+    -stock
+    -isActive
+
+    +
 }
 
 class productType{
-    +id
-    +name
-    +description
+    -id
+    -name
+    -description
 }
 
 class customer{
-    +id
-    +firstName 
-    +lastName
-    +phone 
-    +email
-    +registrationDate
+    -id
+    -firstName 
+    -lastName
+    -phone 
+    -email
+    -registrationDate
 }
 
 sale o-> "1..*" saleDetail

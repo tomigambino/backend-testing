@@ -15,20 +15,14 @@ export class CreateProductDto{
     @IsString({ message: 'La descripción debe ser un texto.' })
     description: string;
 
-    @IsDefined({ message: 'Las horas de impresión son obligatorias.' })
-    @IsNumber()
-    @Type(() => Number)
-    printDuration: number;
-
-    @IsDefined({ message: 'El peso es obligatorio.' })
-    @IsNumber()
-    @Type(() => Number)
-    weight: number;
-
     @IsDefined({ message: 'El precio publicado es obligatorio.' })
     @IsNumber()
     @Type(() => Number)
-    publishedPrice: number;
+    price: number;
+
+    @IsNumber()
+    @Type(() => Number)
+    stock: number;
 
     @IsDefined({ message: 'El estado de actividad es obligatorio.' })
     @IsBoolean({ message: 'El estado de actividad debe ser un valor booleano.' })
