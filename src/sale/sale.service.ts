@@ -49,14 +49,14 @@ export class SaleService {
 
     async findSales(): Promise<SaleEntity[]> {
         return this.saleRepository.find({
-            relations: ['customer', 'saleDetails', 'saleState']
+            relations: ['customer', 'saleDetail', 'saleStatus']
         });
     }
 
     async findSalesByPagination(paginationDto: PaginationDto): Promise<SaleEntity[]> {
         const { page, limit } = paginationDto;
         return this.saleRepository.find({
-            relations: ['customer', 'saleDetails', 'saleDetails.product', 'saleState'],
+            relations: ['customer', 'saleDetail', 'saleDetail.product', 'saleStatus'],
             order: { saleDate: 'DESC' },
             skip: (page - 1) * limit,
             take: limit
@@ -66,7 +66,7 @@ export class SaleService {
     async findSaleById(saleId: number): Promise<SaleEntity> {
         const sale = await this.saleRepository.findOne({
             where: { id: saleId },
-            relations: ['customer', 'saleDetails', 'saleDetails.product', 'saleState']
+            relations: ['customer', 'saleDetail', 'saleDetail.product', 'saleStatus']
         });
 
         if (!sale) {

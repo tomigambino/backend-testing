@@ -24,7 +24,7 @@ export class MercadoPagoService {
             items,
             back_urls: {
                 //Agregar url a la que sera guiada
-                //success: `https://tuapp.com/pago/success?saleId=${saleId}`,
+                success: 'https://localhost:4200',
                 //failure: `https://tuapp.com/pago/failure?saleId=${saleId}`,
                 //pending: `https://tuapp.com/pago/pending?saleId=${saleId}`,
             },
