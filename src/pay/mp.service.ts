@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 import { SaleService } from "src/sale/sale.service";
 import { PayService } from "./pay.service";
 import { PayInterface } from "src/common/interfaces/pay-interface";
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class MercadoPagoService {

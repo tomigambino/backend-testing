@@ -14,11 +14,11 @@ export class PayService {
         const pay = this.payRepository.create({
             mpPreferenceId: payInterface.mpPreferenceId,
             mpInitPoint: payInterface.mpInitPoint,
-            mpPaymentMethod: payInterface.mpPaymentMethod ?? null, // null porque al inicio no lo tenemos
+            mpPaymentMethod: payInterface.mpPaymentMethod,
             mpState: payInterface.mpState,
             amount: payInterface.amount,
             creationDate: payInterface.creationDate,
-            approvalDate: payInterface.approvalDate ?? null // null hasta que el pago se apruebe
+            approvalDate: payInterface.approvalDate
         });
 
         return await this.payRepository.save(pay);
