@@ -3,7 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { entities } from './common/entities';
-import { CustomerTypeModule } from './customerType/customerType.module';
 import { SaleStateModule } from './saleStatus/saleStatus.module';
 import { ProductTypeModule } from './productType/productType.module';
 import { ProductModule } from './product/product.module';
@@ -15,7 +14,7 @@ import { CustomerModule } from './customer/customer.module';
   imports: [TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
-      database: 'impresion3d',
+      database: 'backendtesting',
       username: 'postgres',
       password: 'postgres',
       synchronize: true,
@@ -23,7 +22,6 @@ import { CustomerModule } from './customer/customer.module';
     }),
     TypeOrmModule.forFeature(entities),
     CustomerModule,
-    CustomerTypeModule,
     SaleStateModule,
     ProductTypeModule,
     ProductModule,

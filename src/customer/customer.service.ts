@@ -4,23 +4,16 @@ import { CustomerEntity } from 'src/common/entities/customer.entity';
 import { Repository } from 'typeorm';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { PatchCustomerDto } from './dto/patch-customer.dto';
-import { CustomerTypeService } from 'src/customerType/customerType.service';
 
 @Injectable()
 export class CustomerService {
 
     constructor(
         @InjectRepository(CustomerEntity) private customerRepository: Repository<CustomerEntity>,
-        private customerTypeService: CustomerTypeService
     ){}
 
     async createCustomer(createCustomerDto: CreateCustomerDto): Promise<CustomerEntity>{
-        const { customerTypeId } = createCustomerDto;
-
-        const customerType = await this.customerTypeService.findCustomerTypeById(customerTypeId);
-
         const newCustomer = this.customerRepository.create({
-            customerType: customerType,
             firstName: createCustomerDto.firstName,
             lastName: createCustomerDto.lastName,
             phone: createCustomerDto.phone,
@@ -59,9 +52,7 @@ export class CustomerService {
         if (!customerTypeId) {
             throw new BadRequestException('The customer type ID is required')
         }
-
-        const customerType = await this.customerTypeService.findCustomerTypeById(customerTypeId);
-        customer.customerType = customerType;
+        
         customer.firstName = updateCustomerDto.firstName;
         customer.lastName = updateCustomerDto.lastName;
         customer.phone = updateCustomerDto.phone;
@@ -78,11 +69,6 @@ export class CustomerService {
         }
 
         const { customerTypeId } = updateCustomerDto;
-
-        if (customerTypeId) {
-            const customerType = await this.customerTypeService.findCustomerTypeById(customerTypeId);
-            customer.customerType = customerType;
-        }
 
         // Actualizamos en customer solo los campos que vienen en el dto.
         Object.assign(customer, updateCustomerDto);
