@@ -14,8 +14,11 @@ export class CustomerEntity extends BaseEntity{
     @Column({ name: 'telefono', nullable: true })
     phone: string;
 
-    @Column({ name: 'correo_electronico', nullable: true })
+    @Column({ name: 'correo_electronico', nullable: false })
     email: string;
+
+    @Column({ name: 'contraseña', nullable: false })
+    password: string;
 
     @Column({ name: 'fecha_alta', type: 'date' })
     registrationDate: Date;

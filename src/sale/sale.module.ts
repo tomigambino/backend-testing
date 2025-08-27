@@ -11,7 +11,7 @@ import { SaleStateModule } from 'src/saleStatus/saleStatus.module';
   imports: [TypeOrmModule.forFeature([SaleEntity]),
    CustomerModule,
    SaleDetailModule,
-   SaleStateModule
+   SaleStateModule,
   ],
   controllers: [SaleController],
   providers: [SaleService],

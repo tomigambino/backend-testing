@@ -16,12 +16,12 @@ export class ProductEntity extends BaseEntity{
     @Column({ name: 'descripcion' })
     description: string;
 
-    @Column()
+    @Column({ name: 'price' })
     price: number;
 
-    @Column()
+    @Column({ name: 'stock' })
     stock: number;
 
-    @Column()
+    @Column({ name: 'es_activo' })
     isActive: boolean;
 }

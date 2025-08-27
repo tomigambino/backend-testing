@@ -9,6 +9,7 @@ import { SaleDetailEntity } from 'src/common/entities/saleDetail';
 import { UpdateSaleDto } from './dto/update-sale.dto';
 import { SaleStateService } from 'src/saleStatus/saleStatus.service';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { MPItem } from 'src/common/interfaces/MPItem-interface';
 
 @Injectable()
 export class SaleService {
@@ -73,6 +74,18 @@ export class SaleService {
         }
 
         return sale;
+    }
+
+    async findItemsSaleById(saleId: number): Promise<MPItem[]> {
+        const sale = await this.findSaleById(saleId)
+
+        const items = sale.saleDetail.map(detail => ({
+            id: detail.id.toString(),
+            title: detail.product.name,
+            quantity: detail.quantity,
+            unit_price: detail.product.price
+            }));
+        return items
     }
 
     async partialUpdateSale(saleId: number, updateSaleDto: UpdateSaleDto): Promise<SaleEntity> {

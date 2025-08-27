@@ -9,9 +9,14 @@ import { ProductModule } from './product/product.module';
 import { SaleDetailModule } from './saleDetail/saleDetail.module';
 import { SaleModule } from './sale/sale.module';
 import { CustomerModule } from './customer/customer.module';
+import { PayModule } from './pay/pay.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [TypeOrmModule.forRoot({
+  imports: [ConfigModule.forRoot({
+    isGlobal: true,
+  }),
+    TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
       database: 'backendtesting',
@@ -26,7 +31,8 @@ import { CustomerModule } from './customer/customer.module';
     ProductTypeModule,
     ProductModule,
     SaleDetailModule,
-    SaleModule
+    SaleModule,
+    PayModule
   ],
   controllers: [AppController],
   providers: [AppService],
