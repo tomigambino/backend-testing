@@ -29,9 +29,4 @@ export class ImagesController {
     return this.imagesService.  uploadImage(file);
   }
 
-  'Para comprobar que encuentra el bucket'
-  @Post('test-upload')
-  async testUpload() {
-    return this.imagesService.testUpload();
-  }  
 }

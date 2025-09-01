@@ -30,21 +30,4 @@ export class ImagesService {
     return supabase.storage.from('images-testing').getPublicUrl(path).data.publicUrl;
   }
 
-  'Para comprobar que encuentra el bucket'
-  async testUpload() {
-    const { data, error } = await supabase
-      .storage
-      .from('images-testing') // tu bucket exacto
-      .upload('test.txt', Buffer.from('hola mundo'), {
-        contentType: 'text/plain',
-      });
-
-    if (error) {
-      console.error('Error en upload de prueba:', error);
-      return { ok: false, error };
-    }
-
-    console.log('Upload de prueba OK:', data);
-    return { ok: true, data };
-  }
 }
