@@ -11,6 +11,7 @@ import { SaleModule } from './sale/sale.module';
 import { CustomerModule } from './customer/customer.module';
 import { PayModule } from './pay/pay.module';
 import { ConfigModule } from '@nestjs/config';
+import { ImagesModule } from './images/images.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -32,7 +33,8 @@ import { ConfigModule } from '@nestjs/config';
     ProductModule,
     SaleDetailModule,
     SaleModule,
-    PayModule
+    PayModule,
+    ImagesModule
   ],
   controllers: [AppController],
   providers: [AppService],
