@@ -30,4 +30,8 @@ export class ImagesService {
     return supabase.storage.from('images-testing').getPublicUrl(path).data.publicUrl;
   }
 
+  getName(path: string) {
+    return supabase.storage.from('images-testing');
+  }
+
 }
