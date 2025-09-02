@@ -13,7 +13,6 @@ export class ImagesController {
     @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: './tmp/uploads', // Carpeta temporal
         filename: (req, file, cb) => {
           const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
           cb(null, uniqueSuffix + extname(file.originalname));
