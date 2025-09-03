@@ -92,7 +92,7 @@ export class PayService {
             const preferenceId = payment.order?.id;
             console.log("preferenceId:", preferenceId)
             if(!preferenceId){
-                throw new Error(`No se encontró preferenceId para el pago ${paymentId}`)
+                throw new Error(`No se encontró preferenceId para el pago ${preferenceId}`)
             }
             await this.updatePay(preferenceId, updatePay)
 
