@@ -19,7 +19,6 @@ export class PayController {
     @Post('webhooks/mercadopago')
     @HttpCode(200)
     async getWebhook(@Body() body) {
-      console.log("Entro al controller", body)
       return await this.payService.getWebhook(body)
     }
 }

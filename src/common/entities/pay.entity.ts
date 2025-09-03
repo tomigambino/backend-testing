@@ -1,9 +1,13 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { SaleEntity } from "./sale";
 
 @Entity('pagos')
 export class PayEntity extends BaseEntity {
     @PrimaryGeneratedColumn({ name: 'id' })
     id: number; 
+
+    @OneToOne(() => SaleEntity, (sale) => sale.pay)
+    sale: SaleEntity;
 
     @Column({ name: 'referencia_mp_id' })
     mpPreferenceId: string;

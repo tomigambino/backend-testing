@@ -29,6 +29,7 @@ export class MercadoPagoService {
                 //pending: `https://tuapp.com/pago/pending?saleId=${saleId}`,
             },
             auto_return: 'approved',
+            external_reference: saleId.toString(), // o el ID interno de tu venta
             notification_url: "https://funciona.loca.lt/pago/webhooks/mercadopago" //'https://localhost:3000/pago/webhooks' //Ver si va, NO puede ser local ya que no nos va a llegar la respuesta de MP
         }
     });
@@ -47,8 +48,7 @@ export class MercadoPagoService {
         }, 0),          // total de la venta
         creationDate: new Date()
     }
-    this.payService.createPay(pay)
-
+    this.payService.createPay(pay, saleId)
     return result.init_point; // URL para redirigir al usuario
   }
 }

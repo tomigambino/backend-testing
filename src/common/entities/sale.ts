@@ -1,7 +1,8 @@
-import { PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, OneToMany, JoinColumn, Entity } from "typeorm";
+import { PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, OneToMany, JoinColumn, Entity, OneToOne } from "typeorm";
 import { CustomerEntity } from "./customer.entity";
 import { SaleStatusEntity } from "./saleStatus";
 import { SaleDetailEntity } from "./saleDetail";
+import { PayEntity } from "./pay.entity";
 
 @Entity('venta')
 export class SaleEntity extends BaseEntity{
@@ -18,6 +19,10 @@ export class SaleEntity extends BaseEntity{
     @OneToMany(() => SaleDetailEntity, (saleDetail) => saleDetail.sale)
     @JoinColumn({ name: 'detalle_venta_id' })
     saleDetail: SaleDetailEntity[];
+
+    @OneToOne(() => PayEntity, (pay) => pay.sale)
+    @JoinColumn({ name: 'pago_id' })
+    pay: PayEntity;
 
     @Column({ name: 'seña' })
     deposit: number;

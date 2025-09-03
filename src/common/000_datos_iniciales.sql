@@ -29,15 +29,25 @@ VALUES
 -- ===== ESTADOS DE VENTA =====
 INSERT INTO estado_venta (valor)
 VALUES
-('pendiente'),
-('pagada'),
-('cancelada');
+('Aprobado'),
+('Pendiente'),
+('Rechazado'),
+('Devuelto'),
+('Cancelado');
+
+-- ===== PAGOS =====
+-- Solo funcionará si la tabla 'pagos' ya existe (migraciones corridas)
+--INSERT INTO pagos (referencia_mp_id, init_point_mp_id, payment_method_mp_id, state_mp_id, monto, fecha_creacion, fecha_aprobacion)
+--VALUES
+--('PREF-TEST-001', 'https://www.mercadopago.com/init_point_test1', NULL, 'pending', 5000, NOW(), NULL),
+--('PREF-TEST-002', 'https://www.mercadopago.com/init_point_test2', NULL, 'pending', 15000, NOW(), NULL),
+--('123456', 'https://www.mercadopago.com/init_point_test3', NULL, 'pending', 5000, NOW(), NOW());
 
 -- ===== VENTAS =====
-INSERT INTO venta (fecha_venta, cliente_id, seña, total, descuento_aplicado, estado_venta_id, fecha_entrega_aproximada)
+INSERT INTO venta (fecha_venta, cliente_id, pago_id, seña, total, descuento_aplicado, estado_venta_id, fecha_entrega_aproximada)
 VALUES
-(CURRENT_DATE, 1, 1000, 5000, 0, 1, CURRENT_DATE + INTERVAL '1 day'),
-(CURRENT_DATE, 2, 2000, 15000, 10, 1, CURRENT_DATE + INTERVAL '3 days');
+(CURRENT_DATE, 1, NULL, 1000, 5000, 0, 1, CURRENT_DATE + INTERVAL '1 day'),
+(CURRENT_DATE, 2, NULL, 2000, 15000, 10, 1, CURRENT_DATE + INTERVAL '3 days');
 
 -- ===== DETALLE DE VENTA =====
 INSERT INTO detalle_venta (venta, producto, cantidad, color, total_detalle)
@@ -45,10 +55,4 @@ VALUES
 (1, 1, 1, 'N/A', 5000),
 (2, 2, 1, 'Blanco', 15000);
 
--- ===== PAGOS =====
--- Solo funcionará si la tabla 'pagos' ya existe (migraciones corridas)
-INSERT INTO pagos (referencia_mp_id, init_point_mp_id, payment_method_mp_id, state_mp_id, monto, fecha_creacion, fecha_aprobacion)
-VALUES
-('PREF-TEST-001', 'https://www.mercadopago.com/init_point_test1', NULL, 'pending', 5000, NOW(), NULL),
-('PREF-TEST-002', 'https://www.mercadopago.com/init_point_test2', NULL, 'pending', 15000, NOW(), NULL),
-('123456', 'https://www.mercadopago.com/init_point_test3', NULL, 'pending', 5000, NOW(), NOW());
+

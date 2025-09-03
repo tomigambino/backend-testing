@@ -26,15 +26,12 @@ export class CustomerService {
     }
 
     async findAllCustomers(): Promise<CustomerEntity[]> {
-        return this.customerRepository.find({
-            relations: ['customerType']
-        });
+        return this.customerRepository.find();
     }
 
     async findCustomerById(id: number): Promise<CustomerEntity> {
         const customer = await this.customerRepository.findOne({
             where: { id: id },
-            relations: ['customerType']
         });
 
         if (!customer) {

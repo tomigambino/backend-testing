@@ -10,6 +10,7 @@ import { UpdateSaleDto } from './dto/update-sale.dto';
 import { SaleStateService } from 'src/saleStatus/saleStatus.service';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { MPItem } from 'src/common/interfaces/MPItem-interface';
+import { PayEntity } from 'src/common/entities/pay.entity';
 
 @Injectable()
 export class SaleService {
@@ -45,6 +46,13 @@ export class SaleService {
 
         await this.saleRepository.save(newSale);
         return newSale;
+    }
+
+    async asignPaymentToSale(saleId: number, pay: PayEntity): Promise<SaleEntity> {
+        const sale = await this.findSaleById(saleId);
+        sale.pay = pay;
+        await this.saleRepository.save(sale);
+        return sale;
     }
 
     async findSales(): Promise<SaleEntity[]> {
@@ -126,6 +134,14 @@ export class SaleService {
         const nextStatus = await this.saleStateService.getNextSaleStatus(sale.saleStatus);
 
         sale.saleStatus = nextStatus;
+        await this.saleRepository.save(sale);
+        return sale;
+    }
+
+    async updateSalePaymentStatus(saleId: number, status: string): Promise<SaleEntity> {
+        const sale = await this.findSaleById(saleId);
+        const saleStatusUpdated = await this.saleStateService.findStatusByMPStatus(status);
+        sale.saleStatus = saleStatusUpdated;
         await this.saleRepository.save(sale);
         return sale;
     }

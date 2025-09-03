@@ -51,6 +51,45 @@ export class SaleStateService {
         }
     }
 
+    async findStatusByMPStatus(mpStatus: string){
+        const status = mpStatus.toLowerCase();
+
+        let saleStatusName: string;
+
+        switch (status) {
+            case 'approved':
+            saleStatusName = 'Aprobado';
+            break;
+            case 'pending':
+            case 'authorized':
+            case 'in_process':
+            saleStatusName = 'Pendiente';
+            break;
+            case 'rejected':
+            saleStatusName = 'Rechazado';
+            break;
+            case 'refunded':
+            case 'charged_back':
+            saleStatusName = 'Devuelto';
+            break;
+            case 'cancelled':
+            saleStatusName = 'Cancelado';
+            break;
+            default:
+            throw new Error(`Estado de MP no reconocido: ${mpStatus}`);
+        }
+
+        // Buscamos el estado en la tabla de estados de venta
+        const saleStatus = await this.saleStateEntity.findOne({
+            where: { value: saleStatusName }
+        });
+
+        if(!saleStatus){
+            throw new NotFoundException(`Estado de venta no encontrado: ${saleStatusName}`);
+        }
+        return saleStatus;
+    }
+
     async getNextSaleStatus(status: SaleStatusEntity): Promise<SaleStatusEntity>{
         switch (status.value) {
             case 'Pendiente':
