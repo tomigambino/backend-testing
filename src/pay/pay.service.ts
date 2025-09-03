@@ -38,11 +38,11 @@ export class PayService {
         return pay;
     }
 
-    async updatePay(preferenceId: number, updatePayInterface: UpdatePay){
-        const pay = await this.findPayBySaleId(preferenceId)
+    async updatePay(saleId: number, updatePayInterface: UpdatePay){
+        const pay = await this.findPayBySaleId(saleId)
 
         Object.assign(pay, updatePayInterface);
-
+        await this.saleService.updateSalePaymentStatus(saleId, updatePayInterface.mpState);
         return await this.payRepository.save(pay);
     }
 
@@ -52,7 +52,7 @@ export class PayService {
         })
 
         if (!pay) {
-            throw new NotFoundException(`Pago con ID ${saleId} no encontrado`); //Este error salto 3370640534
+            throw new NotFoundException(`Pago con venta ID ${saleId} no encontrado`); //Este error salto 3370640534
         }
         
         return pay;
