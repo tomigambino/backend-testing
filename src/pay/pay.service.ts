@@ -33,6 +33,7 @@ export class PayService {
 
     async updatePay(preferenceId: number, updatePayInterface: UpdatePay){
         const pay = await this.findPayByPreferenceId(preferenceId)
+        console.log("updatePay, pay:", pay)
 
         Object.assign(pay, updatePayInterface);
 
@@ -51,10 +52,15 @@ export class PayService {
         return pay;
     }
 
-    async getWebhook(request){
+    async getWebhook(body){
         try {
-            const paymentId: string = request.body.data.id;
-            const topic: string = request.body.type;
+            console.log("body:", body)
+            console.log("data:", body.data)
+            const paymentId: string = body.data.id;
+            console.log("topic:",body.type)
+            const topic: string = body.type;
+            console.log("paymentId:",paymentId)
+            
 
             console.log(paymentId, topic)
 
@@ -71,8 +77,9 @@ export class PayService {
 
     private async processWebhookPay(paymentId: string) {
     // Consultar detalles del pago en MP
+        console.log("processWebhookPay, payment:", paymentId)
         const payment = await this.payment.get({id: paymentId}); 
-
+        console.log("processWebhookPay, payment:", payment)
         if (payment.payment_method_id && payment.status){
             const updatePay: UpdatePay = {
             mpPaymentMethod: payment.payment_method_id,
@@ -83,6 +90,7 @@ export class PayService {
             }
 
             const preferenceId = payment.order?.id;
+            console.log("preferenceId:", preferenceId)
             if(!preferenceId){
                 throw new Error(`No se encontró preferenceId para el pago ${paymentId}`)
             }

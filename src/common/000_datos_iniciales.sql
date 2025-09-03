@@ -50,4 +50,5 @@ VALUES
 INSERT INTO pagos (referencia_mp_id, init_point_mp_id, payment_method_mp_id, state_mp_id, monto, fecha_creacion, fecha_aprobacion)
 VALUES
 ('PREF-TEST-001', 'https://www.mercadopago.com/init_point_test1', NULL, 'pending', 5000, NOW(), NULL),
-('PREF-TEST-002', 'https://www.mercadopago.com/init_point_test2', NULL, 'pending', 15000, NOW(), NULL);
+('PREF-TEST-002', 'https://www.mercadopago.com/init_point_test2', NULL, 'pending', 15000, NOW(), NULL),
+('123456', 'https://www.mercadopago.com/init_point_test3', NULL, 'pending', 5000, NOW(), NOW());

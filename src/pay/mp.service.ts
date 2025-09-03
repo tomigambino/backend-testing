@@ -29,7 +29,7 @@ export class MercadoPagoService {
                 //pending: `https://tuapp.com/pago/pending?saleId=${saleId}`,
             },
             auto_return: 'approved',
-            notification_url: "https://testing-funciona-porfa.loca.lt" //'https://localhost:3000/pago/webhooks' //Ver si va, NO puede ser local ya que no nos va a llegar la respuesta de MP
+            notification_url: "https://funciona.loca.lt/pago/webhooks/mercadopago" //'https://localhost:3000/pago/webhooks' //Ver si va, NO puede ser local ya que no nos va a llegar la respuesta de MP
         }
     });
 

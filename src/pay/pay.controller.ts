@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
 import { MercadoPagoService } from './mp.service';
 import { PayService } from './pay.service';
 
@@ -19,7 +19,7 @@ export class PayController {
     @Post('webhooks/mercadopago')
     @HttpCode(200)
     async getWebhook(@Body() body) {
-      console.log("Entro al controller")
+      console.log("Entro al controller", body)
       return await this.payService.getWebhook(body)
     }
 }
