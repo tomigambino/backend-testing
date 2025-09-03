@@ -1,9 +1,7 @@
-export interface PayInterface {
-  mpPreferenceId: string;       // ID de la preferencia de pago (devuelto por MP)
-  mpInitPoint: string;          // URL para redirigir al Checkout Pro
-  mpPaymentMethod: string;   // Método de pago (se completa vía webhook)
-  mpState: string; // Estado del pago
-  amount: number;               // Total de la venta
-  creationDate: Date;           // Fecha de creación de la preferencia
-  approvalDate: Date;   // Fecha de aprobación (solo si se aprueba el pago)
+export interface InitialPay {
+  mpPreferenceId: string;   // result.id de MP
+  mpInitPoint: string;      // result.init_point de MP
+  mpState: string;          // "pending" o "created"
+  amount: number;           // total de la venta
+  creationDate: Date;       // new Date() o result.date_created
 }

@@ -1,9 +1,9 @@
-import { Controller, Get, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post, Req } from '@nestjs/common';
 import { MercadoPagoService } from './mp.service';
 import { PayService } from './pay.service';
 
 
-@Controller('pay')
+@Controller('pago')
 export class PayController {
 
     constructor(
@@ -16,11 +16,10 @@ export class PayController {
         return await this.mpService.createPreference(saleId);
     }
 
-    // Implementar esta lógica
-    /*
     @Post('webhooks/mercadopago')
-    async obtenerWebhook(@Req() request) {
-      return await this.payService.obtenerWebhook(request)
+    @HttpCode(200)
+    async getWebhook(@Body() body) {
+      console.log("Entro al controller")
+      return await this.payService.getWebhook(body)
     }
-    */
 }

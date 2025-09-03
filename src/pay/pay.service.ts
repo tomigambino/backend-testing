@@ -1,34 +1,93 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import MercadoPagoConfig, { Payment } from 'mercadopago';
 import { PayEntity } from 'src/common/entities/pay.entity';
-import { PayInterface } from 'src/common/interfaces/pay-interface';
+import { InitialPay } from 'src/common/interfaces/pay-interface';
+import { UpdatePay } from 'src/common/interfaces/update-interface';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class PayService {
 
-    constructor(@InjectRepository(PayEntity) private payRepository: Repository<PayEntity>) {}
+    private payment: Payment 
+
+    constructor(@InjectRepository(PayEntity) private payRepository: Repository<PayEntity>) {
+        const client = new MercadoPagoConfig({
+        accessToken: process.env.MP_ACCESS_TOKEN as string,
+        });
+        this.payment = new Payment(client);
+    }
 
 
-    async createPay(payInterface: PayInterface) {
+    async createPay(payInterface: InitialPay) {
         const pay = this.payRepository.create({
             mpPreferenceId: payInterface.mpPreferenceId,
             mpInitPoint: payInterface.mpInitPoint,
-            mpPaymentMethod: payInterface.mpPaymentMethod,
             mpState: payInterface.mpState,
             amount: payInterface.amount,
-            creationDate: payInterface.creationDate,
-            approvalDate: payInterface.approvalDate
+            creationDate: payInterface.creationDate
         });
 
         return await this.payRepository.save(pay);
     }
 
+    async updatePay(preferenceId: number, updatePayInterface: UpdatePay){
+        const pay = await this.findPayByPreferenceId(preferenceId)
 
-    //Implementar esta función
-    /*
-    async obtenerWebhook(request: Request){
-        const { id, topic } = request.
+        Object.assign(pay, updatePayInterface);
+
+        return await this.payRepository.save(pay);
     }
-    */
+
+    async findPayByPreferenceId(preferenceId: number){
+        const pay = await this.payRepository.findOne({
+            where: {mpPreferenceId: preferenceId.toString()}
+        })
+
+        if (!pay) {
+            throw new NotFoundException(`Pago con ID ${preferenceId} no encontrado`);
+        }
+        
+        return pay;
+    }
+
+    async getWebhook(request){
+        try {
+            const paymentId: string = request.body.data.id;
+            const topic: string = request.body.type;
+
+            console.log(paymentId, topic)
+
+            if (topic === 'payment' && paymentId) {
+                await this.processWebhookPay(paymentId);
+            }
+            return { status: 'ok' };
+        } catch (error) {
+            console.error('Error en webhook:', error);
+            // Igual devolvemos 200 para que MP no reintente indefinidamente
+            return { status: 'error', message: error.message };
+        }
+    }
+
+    private async processWebhookPay(paymentId: string) {
+    // Consultar detalles del pago en MP
+        const payment = await this.payment.get({id: paymentId}); 
+
+        if (payment.payment_method_id && payment.status){
+            const updatePay: UpdatePay = {
+            mpPaymentMethod: payment.payment_method_id,
+            mpState: payment.status,
+            approvalDate: payment.date_approved // Verificamos que exista date_approved, si existe creamos el Date y si no lo dejamos null
+            ? new Date(payment.date_approved)
+            : null
+            }
+
+            const preferenceId = payment.order?.id;
+            if(!preferenceId){
+                throw new Error(`No se encontró preferenceId para el pago ${paymentId}`)
+            }
+            await this.updatePay(preferenceId, updatePay)
+
+        }
+    }
 }
