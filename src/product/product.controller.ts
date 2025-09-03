@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post } from '@ne
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { PatchProductDto } from './dto/patch-product.dto';
+import { ParseIntPipe } from '@nestjs/common';
 
 @Controller('producto')
 export class ProductController {
@@ -21,6 +22,13 @@ export class ProductController {
     @Get()
     getAllProducts() {
         return this.productService.findAllProducts();
+    }
+
+    @Get('tipo/:productTypeId')
+    async findAllByProductType(
+        @Param('productTypeId', ParseIntPipe) productTypeId: number,
+    ) {
+        return this.productService.findAllProductsByProductType(productTypeId);
     }
 
     @Patch(':id')

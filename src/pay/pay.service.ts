@@ -116,7 +116,7 @@ export class PayService {
 
             const preferenceId = Number(payment.external_reference);
             if(!preferenceId){
-                throw new Error(`No se encontró preferenceId para el pago ${paymentId}`)
+                throw new Error(`No se encontró preferenceId para el pago ${preferenceId}`)
             }
             await this.updatePay(preferenceId, updatePay)
             await this.saleService.updateSalePaymentStatus(preferenceId, updatePay.mpState)
