@@ -26,7 +26,6 @@ export class SaleDetailService {
         const newSaleDetail = this.saleDetailRepository.create({
             product: product,
             quantity: createSaleDetailDto.quantity,
-            color: createSaleDetailDto.color,
             totalDetail: detailTotal
         });
 
@@ -83,10 +82,6 @@ export class SaleDetailService {
         if (updateSaleDetailDto.quantity) {
             saleDetail.quantity = updateSaleDetailDto.quantity;
             updateTotal = true; // Si se actualiza la cantidad, recalculamos el total
-        }
-
-        if (updateSaleDetailDto.color) {
-            saleDetail.color = updateSaleDetailDto.color;
         }
 
         // Calculamos el total del detalle

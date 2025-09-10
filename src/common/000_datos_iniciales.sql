@@ -16,15 +16,15 @@ VALUES
 -- ===== TIPOS DE PRODUCTO =====
 INSERT INTO tipo_producto (nombre)
 VALUES
-('Alquiler de Cancha'),
-('Accesorios');
+('Pelota'),
+('Remeras');
 
 -- ===== PRODUCTOS =====
 -- Ahora usando la columna booleana correcta: es_activo
 INSERT INTO producto (tipo_producto, nombre, descripcion, price, stock, es_activo)
 VALUES
-(1, 'Alquiler Cancha Fútbol 5', 'Alquiler por 1 hora', 5000, 10, true),
-(2, 'Pelota Profesional', 'Pelota N°5 de fútbol sintético', 15000, 20, true);
+(1, 'Pelota Mundial 2010', 'Pelota original del mundial 2010', 5000, 10, true),
+(2, 'Remera Entrenamiento', 'Remera de entrenamiento de fútbol', 15000, 20, true);
 
 -- ===== ESTADOS DE VENTA =====
 INSERT INTO estado_venta (valor)
@@ -44,15 +44,15 @@ VALUES
 --('123456', 'https://www.mercadopago.com/init_point_test3', NULL, 'pending', 5000, NOW(), NOW());
 
 -- ===== VENTAS =====
-INSERT INTO venta (fecha_venta, cliente_id, pago_id, seña, total, descuento_aplicado, estado_venta_id, fecha_entrega_aproximada)
+INSERT INTO venta (fecha_venta, cliente_id, pago_id, total, estado_venta_id)
 VALUES
-(CURRENT_DATE, 1, NULL, 1000, 5000, 0, 1, CURRENT_DATE + INTERVAL '1 day'),
-(CURRENT_DATE, 2, NULL, 2000, 15000, 10, 1, CURRENT_DATE + INTERVAL '3 days');
+(CURRENT_DATE, 1, NULL, 5000, 1),
+(CURRENT_DATE, 2, NULL, 15000, 1);
 
 -- ===== DETALLE DE VENTA =====
-INSERT INTO detalle_venta (venta, producto, cantidad, color, total_detalle)
+INSERT INTO detalle_venta (venta, producto, cantidad, total_detalle)
 VALUES
-(1, 1, 1, 'N/A', 5000),
-(2, 2, 1, 'Blanco', 15000);
+(1, 1, 1, 5000),
+(2, 2, 1, 15000);
 
 

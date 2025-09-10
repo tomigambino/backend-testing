@@ -1,9 +1,6 @@
 import { IsString, IsNotEmpty, IsDefined, IsNumber, IsEmail} from 'class-validator'
 
 export class CreateCustomerDto{
-    @IsDefined({ message: 'El id de tipo de cliente es obligatorio.' })
-    @IsNumber()
-    customerTypeId: number;
 
     @IsNotEmpty({ message: 'El nombre es obligatorio.' })
     @IsString({ message: 'El nombre debe ser un texto.' })

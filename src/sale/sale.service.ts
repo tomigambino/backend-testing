@@ -37,11 +37,8 @@ export class SaleService {
             saleDate: new Date(),
             customer: customer,
             saleDetail: saleDetails,
-            deposit: createSaleDto.deposit,
             total: this.calculateTotalSale(saleDetails),
-            appliedDiscount: createSaleDto.appliedDiscount,
             saleStatus: saleState,
-            estimatedDeliveryDate: createSaleDto.estimatedDeliveryDate
         });
 
         await this.saleRepository.save(newSale);

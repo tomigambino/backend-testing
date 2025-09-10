@@ -18,9 +18,6 @@ export class SaleDetailEntity extends BaseEntity{
     @Column({ name: 'cantidad' })
     quantity: number;
 
-    @Column({ name: 'color' })
-    color: string;
-
     @Column({ name: 'total_detalle' })
     totalDetail: number;
 }

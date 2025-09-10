@@ -43,12 +43,6 @@ export class CustomerService {
 
     async updateCustomer(id: number, updateCustomerDto: CreateCustomerDto): Promise<CustomerEntity> {
         const customer = await this.findCustomerById(id);
-
-        const { customerTypeId } = updateCustomerDto;
-
-        if (!customerTypeId) {
-            throw new BadRequestException('The customer type ID is required')
-        }
         
         customer.firstName = updateCustomerDto.firstName;
         customer.lastName = updateCustomerDto.lastName;
@@ -64,8 +58,6 @@ export class CustomerService {
         if (!customer) {
             throw new NotFoundException("Customer Not Found");
         }
-
-        const { customerTypeId } = updateCustomerDto;
 
         // Actualizamos en customer solo los campos que vienen en el dto.
         Object.assign(customer, updateCustomerDto);

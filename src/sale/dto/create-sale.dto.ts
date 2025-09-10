@@ -14,17 +14,6 @@ export class CreateSaleDto{
     @Type(() => Number)
     saleDetailIds: number[];
 
-    @IsDefined({ message: 'La seña es obligatoria.' })
-    @IsNumber({}, { message: 'La seña debe ser un número.' })
-    deposit: number;
-
-    @IsDefined({ message: 'El descuento aplicado es obligatorio.' })
-    @IsNumber({}, { message: 'El descuento aplicado debe ser un número.' })
-    appliedDiscount: number;
     //El total se calcula en el servicio de venta
     //El estado de venta se asigna por defecto a "Pendiente"
-
-    @Type(() => Date)
-    @IsDate({ message: 'La fecha debe tener un formato valido.' })
-    estimatedDeliveryDate: Date;
 }

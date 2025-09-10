@@ -24,19 +24,10 @@ export class SaleEntity extends BaseEntity{
     @JoinColumn({ name: 'pago_id' })
     pay: PayEntity;
 
-    @Column({ name: 'seña' })
-    deposit: number;
-
     @Column({ name: 'total' })
     total: number;
-
-    @Column({ name: 'descuento_aplicado' })
-    appliedDiscount: number;
 
     @ManyToOne(() => SaleStatusEntity)
     @JoinColumn({ name: 'estado_venta_id' })
     saleStatus: SaleStatusEntity;
-
-    @Column({ type: 'date', name: 'fecha_entrega_aproximada' })
-    estimatedDeliveryDate: Date;
 }
