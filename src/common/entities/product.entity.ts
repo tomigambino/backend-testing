@@ -1,5 +1,6 @@
-import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ProductTypeEntity } from "./productType";
+import { ImageEntity } from "./image.entity";
 
 @Entity('producto')
 export class ProductEntity extends BaseEntity{
@@ -9,6 +10,9 @@ export class ProductEntity extends BaseEntity{
     @ManyToOne(() => ProductTypeEntity)
     @JoinColumn({ name: 'tipo_producto' })
     productType: ProductTypeEntity;
+
+    @OneToMany(() => ImageEntity, (image) => image.product, {eager: true})
+    images: ImageEntity[];
 
     @Column({ name: 'nombre' })
     name: string;

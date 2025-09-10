@@ -4,12 +4,14 @@ import { v4 as uuid } from 'uuid';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ImageEntity } from 'src/common/entities/image.entity';
+import { ProductService } from 'src/product/product.service';
 
 @Injectable()
 export class ImagesService {
   constructor(
     @InjectRepository(ImageEntity)
     private readonly imageRepo: Repository<ImageEntity>,
+    private readonly productService: ProductService,
   ) {}
 
   async uploadImage(file: Express.Multer.File, productId: number) {
@@ -23,6 +25,8 @@ export class ImagesService {
     const fileExt = file.originalname.split('.').pop();
     const uniqueName = `${uuid()}.${fileExt}`;
     const storagePath = `products/${productId}/${uniqueName}`;
+
+    const product = await this.productService.findProductById(productId)
 
     // Sube la imagen a supabase
     const { data, error } = await supabase
@@ -44,7 +48,7 @@ export class ImagesService {
 
     // Esto guarda los datos de la imagen en nuestra bd para luego poder llamarla
     const imageData = this.imageRepo.create({
-      product_id: productId,
+      product: product,
       url: publicUrl,
       name: uniqueName,
       size: `${(file.size / 1024).toFixed(2)} KB`,
@@ -57,12 +61,12 @@ export class ImagesService {
 
   // Función para que traigamos las imagenes según el producto al que pertenezca
   async getImagesByProduct(productId: number) {
-    return await this.imageRepo.find({ where: { product_id: productId } });
+    return await this.imageRepo.find({ where: { product: { id: productId } } });
   }
 
   // Esto traería una imagen especifica - VER SI LA VAMOS A USAR O LO MANEJAMOS DESDE EL FRONTEND
   async getSpecificImage(productId: number, imageId: number) {
-    const image = await this.imageRepo.findOne({where: { id: imageId, product_id: productId }});
+    const image = await this.imageRepo.findOne({where: { id: imageId, product: { id: productId } }});
 
     if (!image) {
       throw new HttpException(`Imagen no encontrada`, HttpStatus.NOT_FOUND);

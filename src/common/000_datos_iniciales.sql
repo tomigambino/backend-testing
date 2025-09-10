@@ -26,6 +26,17 @@ VALUES
 (1, 'Pelota Mundial 2010', 'Pelota original del mundial 2010', 5000, 10, true),
 (2, 'Remera Entrenamiento', 'Remera de entrenamiento de fútbol', 15000, 20, true);
 
+-- ===== IMAGENES =====
+INSERT INTO imagenes (producto_id, url, nombre_archivo, tamaño)
+VALUES
+(1, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/1/Pelota%20Profesional%20-%201.jpg', 'Pelota Profesional - 1.jpg', '135.78KB'),
+(1, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/1/Pelota%20Profesional%20-%202.jpg', 'Pelota Profesional - 2.jpg', '137.01KB'),
+(1, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/1/Pelota%20Profesional%20-%203.webp', 'Pelota Profesional - 3.webp', '44.35KB'),
+(2, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/2/Camiseta%201.jpg', 'Camiseta - 1.jpg', '10.74KB'),
+(2, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/2/Camiseta%202.webp', 'Camiseta - 2.webp', '10.24KB'),
+(2, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/2/Camiseta%203.webp', 'Camiseta - 3.webp', '24.65KB');
+
+
 -- ===== ESTADOS DE VENTA =====
 INSERT INTO estado_venta (valor)
 VALUES

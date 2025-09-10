@@ -33,7 +33,7 @@ export class ProductService {
     async findProductById(id: number) {
         const product = await this.productRepository.findOne({
             where: { id },
-            relations: ['productType'],
+            relations: ['productType', 'images'],
         });
 
         if (!product) {
@@ -45,14 +45,14 @@ export class ProductService {
 
     async findAllProducts() {
         return await this.productRepository.find({
-            relations: ['productType'],
+            relations: ['productType', 'images'],
         });
     }
 
     async findAllProductsByProductType(productTypeId: number) {
         const products = await this.productRepository.find({
             where: { productType: {id: productTypeId} },
-            relations: ['productType'],
+            relations: ['productType', 'images'],
         });
 
         if (!products || products.length === 0) {

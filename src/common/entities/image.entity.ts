@@ -1,12 +1,14 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { ProductEntity } from "./product.entity";
 
-@Entity('images')
+@Entity('imagenes')
 export class ImageEntity extends BaseEntity{
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
-    product_id: number;
+    @ManyToOne(() => ProductEntity, (product) => product.images, { onDelete: 'CASCADE' })
+    @JoinColumn({name: 'producto_id'})
+    product: ProductEntity;
 
     @Column({name: 'url'})
     url: string
