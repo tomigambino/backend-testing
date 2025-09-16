@@ -2,8 +2,6 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { SaleStateService } from "./saleStatus.service";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { SaleStatusEntity } from "src/common/entities/saleStatus";
-import { create } from "domain";
-import { UpdateSaleDetailDto } from "src/saleDetail/dto/update-saleDetail.dto";
 
 describe('SaleStateService', () => {
     let saleStateService: SaleStateService;
@@ -63,13 +61,23 @@ describe('SaleStateService', () => {
 
     describe('updateSaleState', () => {
         it('Cargar un estado', async () => {
-            const mockData = {id:1 , value: "Pendiente"};
-            mockRepo.update.mockResolvedValue(mockData);
+            const mockData = {id:1 , value: "Pendiente"} as SaleStatusEntity;
+            const mockDataDto = {value: "Pendiente"};
 
-            const updateSaleState = await saleStateService.updateSaleState(1, mockData);
-            
-            expect(updateSaleState).toEqual(mockData);
+            // Intercepta el método findSaleStateById (del servicio 'saleStateService') y simula su respuesta
+            jest.spyOn(saleStateService, 'findSaleStateById')
+                .mockResolvedValueOnce(mockData) // 
+                .mockResolvedValueOnce(mockData);
+
+            mockRepo.update.mockResolvedValue({affected: 1});
+
+            const result = await saleStateService.updateSaleState(1, mockDataDto);
+
+            expect(result).toEqual(mockData);
+            expect(saleStateService.findSaleStateById).toHaveBeenCalledTimes(2);
+            expect(saleStateService.findSaleStateById).toHaveBeenCalledWith(1);
+            expect(mockRepo.update).toHaveBeenCalledWith(1, mockDataDto);
         })
     })
-    
+
 })
