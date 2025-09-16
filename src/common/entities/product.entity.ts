@@ -11,7 +11,7 @@ export class ProductEntity extends BaseEntity{
     @JoinColumn({ name: 'tipo_producto' })
     productType: ProductTypeEntity;
 
-    @OneToMany(() => ImageEntity, (image) => image.product, {eager: true})
+    @OneToMany(() => ImageEntity, (image) => image.product)
     images: ImageEntity[];
 
     @Column({ name: 'nombre' })
