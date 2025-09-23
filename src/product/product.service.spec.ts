@@ -3,7 +3,7 @@ import { ProductService } from "./product.service"
 import { getRepositoryToken } from "@nestjs/typeorm"
 import { ProductEntity } from "src/common/entities/product.entity"
 import { ProductTypeService } from "src/productType/productType.service"
-import { NotFoundException } from "@nestjs/common"
+import { BadRequestException, NotFoundException } from "@nestjs/common"
 
 describe('productService', () => {
     let productService: ProductService
@@ -24,6 +24,7 @@ describe('productService', () => {
     beforeEach(async () => {
         //Limpia todos los mocks ANTES de cada test
         jest.clearAllMocks();
+        jest.restoreAllMocks();
         const module: TestingModule = await Test.createTestingModule({
             providers: [ProductService, 
                 {
@@ -343,10 +344,196 @@ describe('productService', () => {
             // Verificamos que el metodo find del repositorio sea llamado
             expect(mockProductRepository.find).toHaveBeenCalled();
         })
-        describe('findProductsByIds', () => {
-        it('Buscar y mostrar productos por sus ids', async () => {})
-        it('Buscar productos por ids con parametro vacio', async () => {})
-        it('Buscar productos por ids que no existen', async () => {})
+        
+    })
+    describe('findProductsByIds', () => {
+        it('Buscar y mostrar productos por sus ids', async () => {
+            const idsParam = '1,2,3'
+
+            // Mockeamos los productTypes que van a tener los productos
+            const mockProductType1 = {
+                id: 1,
+                name: 'Pelota'
+            }
+            const mockProductType2 = {
+                id: 2,
+                name: 'Camiseta'
+            }
+
+            const mockProducts = [
+                {
+                    id: 1,
+                    productType: mockProductType1,
+                    images: [],
+                    name: 'Pelota de Mundial 2010',
+                    description:'Pelota original usada en el mundial 2010',
+                    price: 10000,
+                    stock: 15,
+                    isActive: true
+                },
+                {
+                    id: 2,
+                    productType: mockProductType2,
+                    images: [],
+                    name: 'Camiseta de Mundial 2010',
+                    description:'Camiseta original usada en el mundial 2010',
+                    price: 5000,
+                    stock: 20,
+                    isActive: true
+                },
+                {
+                    id: 3,
+                    productType: mockProductType1,
+                    images: [],
+                    name: 'Balón de Futbol',
+                    description: 'Balón de Futbol de alta calidad',
+                    price: 3000,
+                    stock: 25,
+                    isActive: true
+                }
+            ];
+
+            // Mockeamos el método interno findProductById
+            const spy = jest.spyOn(productService, 'findProductById')
+            // Simulamos la función findProductById como un mock
+            .mockImplementation((id: number) =>
+                Promise.resolve(mockProducts.find(p => p.id === id) as any)
+            );
+
+            const result = await productService.findProductsByIds(idsParam);
+
+            expect(result).toEqual(mockProducts);
+            expect(spy).toHaveBeenCalledTimes(3);
+            expect(spy).toHaveBeenCalledWith(1);
+            expect(spy).toHaveBeenCalledWith(2);
+            expect(spy).toHaveBeenCalledWith(3);
+        })
+        it('Buscar productos por ids con parametro vacio', async () => {
+            const idsParam = ''
+
+            expect(productService.findProductsByIds(idsParam)).rejects.toThrow(BadRequestException);
+        })
+        it('Buscar productos por ids que no existen', async () => {
+            // Id del producto inexistente
+            const idProduct = '999'
+
+            // Mockeamos el método interno findProductById
+            jest.spyOn(productService, 'findProductById')
+            // Simulamos la función findProductById como un mock que devolvera NotFoundException
+            .mockImplementation(() => {throw new NotFoundException(`Producto con ID ${idProduct} no encontrado`);})
+
+            // Verificamos que devuelva el método de error
+            expect(productService.findProductsByIds(idProduct)).rejects.toThrow(NotFoundException);
+        })
+    })
+    describe('partialUpdateProduct', () => {
+        it('Actualizar un producto existente con productType de manera correcta y mostrarlo', async () => {
+            const productId = 1;
+
+            // Mockeamos el producto que se obtendra con id 1
+            const mockInitialProductType = {
+                id: 1,
+                name: 'Pelota'
+            }
+
+            const mockProduct =
+                {
+                    id: 1,
+                    productType: mockInitialProductType,
+                    images: [],
+                    name: 'Pelota de Mundial 2010',
+                    description:'Pelota original usada en el mundial 2010',
+                    price: 10000,
+                    stock: 15,
+                    isActive: true
+                }
+
+            // Mockeamos el updateProductDto
+            const updateProductDto = {
+                productTypeId: 2,
+                name: 'Remera de Argentina',
+                description: 'Remera de Argentina usada en el mundial 2010',
+                price: 6000,
+                stock: 7,
+                isActive: true
+            }
+
+            // Mockeamos el producto que se almacenara en la base de datos
+            const mockProductTypeUpdated = {
+                id: 2,
+                name: 'Camiseta'
+            }
+
+            const mockUpdateProductSave = {
+                id: 1,
+                productType: mockProductTypeUpdated,
+                images: [],
+                name: 'Pelota de Mundial 2010',
+                description: 'Remera de Argentina usada en el mundial 2010',
+                price: 6000,
+                stock: 7,
+                isActive: true
+            }
+
+            // Mockeamos el método interno findProductById()
+            jest.spyOn(productService, 'findProductById').mockResolvedValue(mockProduct as any)
+
+            // Mockeamos el método findProductTypeById del servicio ProductType
+            mockProductTypeService.findProductTypeById.mockResolvedValue(mockInitialProductType)
+
+            // Mockeamos el save
+            mockProductRepository.save.mockResolvedValue(mockUpdateProductSave)
+
+            // Obtenemos el resultado del service (ACC - ACtuar)
+            const result = await productService.partialUpdateProduct(productId, updateProductDto);
+
+            // Verificamos el resultado (ASSERT - Verificar)
+            expect(result).toEqual(mockUpdateProductSave);
+            // Verificamos que el metodo save del repositorio sea llamado
+            expect(mockProductRepository.save).toHaveBeenCalled();
+        })
+        it('Actualizar un producto existente sin productType existente', async () => {
+            const productId = 1;
+
+            // Mockeamos el updateProductDto
+            const mockUpdateProductDto = {
+                productTypeId: 2,
+                name: 'Remera de Argentina',
+                description: 'Remera de Argentina usada en el mundial 2010',
+                price: 6000,
+                stock: 7,
+                isActive: true
+            }
+
+            // Mockeamos el producto que se obtendra con id 1
+            const mockInitialProductType = {
+                id: 1,
+                name: 'Pelota'
+            }
+
+            const mockProduct = {
+                id: 1,
+                productType: mockInitialProductType,
+                images: [],
+                name: 'Pelota de Mundial 2010',
+                description:'Pelota original usada en el mundial 2010',
+                price: 10000,
+                stock: 15,
+                isActive: true
+            }
+            // Mockeamos el método interno findProductById()
+            jest.spyOn(productService, 'findProductById').mockResolvedValue(mockProduct as any)
+
+            // Mockeamos el método findProductTypeById del servicio ProductType
+            mockProductTypeService.findProductTypeById.mockRejectedValue(new NotFoundException(`Product Type with ID ${mockUpdateProductDto.productTypeId} not found`))
+
+            // Verificamos el resultado (ASSERT - Verificar)
+            expect(productService.partialUpdateProduct(productId, mockUpdateProductDto)).rejects.toThrow(NotFoundException);
+            // Verificamos que el metodo save del repositorio NO sea llamado
+            expect(mockProductRepository.save).not.toHaveBeenCalled();
+        })
+        it('Actualizar un producto con id inexistente devolviendo NotFoundException', async () => {
+            
         })
     })
 })

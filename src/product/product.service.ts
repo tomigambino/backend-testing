@@ -72,20 +72,14 @@ export class ProductService {
         // Convertimos el string en array de numbers [1, 2, 3, 4]
         const productIds = idsParam.split(',').map(id => parseInt(id.trim(), 10))
 
-
         // Buscamos los productos por sus IDs
         const productPromises = productIds.map(id => this.findProductById(id));
         const results = await Promise.all(productPromises);
-
-        // Verificamos que quedó al menos un ID válido
-        if (results.length === 0) {
-            throw new BadRequestException('No se encontraron IDs válidos');
-        }
     
         return results
     }
 
-    async partialUpdateProduct(id: number, updateProductDto: PatchProductDto) {
+    async partialUpdateProduct(id: number, updateProductDto: PatchProductDto): Promise<ProductEntity> {
         const product = await this.findProductById(id);
 
         if (updateProductDto.productTypeId) {
