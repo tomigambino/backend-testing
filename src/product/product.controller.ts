@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Query } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { PatchProductDto } from './dto/patch-product.dto';
@@ -12,6 +12,12 @@ export class ProductController {
     @Post()
     createProduct(@Body() createProductDto: CreateProductDto) {
         return this.productService.createProduct(createProductDto);
+    }
+
+    @Get('carrito')  // GET /producto/carrito?ids=1,2,3
+    async getProductsForCart(@Query('ids') idsParam: string) {
+        console.log('IDs recibidos en el controlador:', idsParam);
+        return this.productService.findProductsByIds(idsParam);
     }
 
     @Get(':id')
@@ -30,6 +36,8 @@ export class ProductController {
     ) {
         return this.productService.findAllProductsByProductType(productTypeId);
     }
+
+    
 
     @Patch(':id')
     patchProduct(@Param('id') id: number, @Body() updateProductDto: PatchProductDto) {
