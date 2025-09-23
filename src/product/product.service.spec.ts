@@ -133,4 +133,220 @@ describe('productService', () => {
             expect(mockProductRepository.save).not.toHaveBeenCalled();
         })
     })
+    describe('findProductById', () => {
+        it('Buscar un producto por id y mostrarlo', async () => {
+            const productId = 1;
+            // Mockeamos el productType que va a tener el producto
+            const mockProductType = {
+                id: 1,
+                name: 'Pelota'
+            }
+
+            // Mockeamos la respuesta del repositorio
+            const mockFindOneProduct = {
+                id: 1,
+                productType: mockProductType,
+                images: [],
+                name: 'Pelota de Mundial 2010',
+                description:'Pelota original usada en el mundial 2010',
+                price: 10000,
+                stock: 15,
+                isActive: true
+            };
+
+            // Configuramos el mock
+            mockProductRepository.findOne.mockResolvedValue(mockFindOneProduct);
+
+            // Obtenemos el resultado del service (ACC - ACtuar)
+            const result = await productService.findProductById(productId);
+
+            // Verificamos el resultado (ASSERT - Verificar)
+            expect(result).toEqual(mockFindOneProduct);
+            expect(result.id).toBe(productId);
+            expect(result.images).toEqual([]);
+            // Verificamos que el metodo findOne del repositorio sea llamado con el id correcto
+            expect(mockProductRepository.findOne).toHaveBeenCalledWith({
+                where: { id: productId },
+                relations: ['productType', 'images'],
+            });
+        })
+        it('Buscar producto por un id que no existe', async () => {
+            const productId = 2;
+
+            // Configuramos el mock para que devuelva la excepcion NotFoundException
+            mockProductRepository.findOne.mockResolvedValue(null);
+
+            // Verificamos el resultado directamente aca, 
+            // porque si creamos una constante result el NotFoundException queda en esa linea y no llega al expect
+            await expect(productService.findProductById(productId)).rejects.toThrow(NotFoundException);
+        })
+    })
+    describe('findAllProducts', () => {
+        it('Buscar y mostrar todos los productos', async () => {
+            // Mockeamos los productTypes que van a tener los productos
+            const mockProductType1 = {
+                id: 1,
+                name: 'Pelota'
+            }
+            const mockProductType2 = {
+                id: 2,
+                name: 'Camiseta'
+            }
+            // Mockeamos la respuesta del repositorio
+            const mockFindAllProducts = [
+                {
+                    id: 1,
+                    productType: mockProductType1,
+                    images: [],
+                    name: 'Pelota de Mundial 2010',
+                    description:'Pelota original usada en el mundial 2010',
+                    price: 10000,
+                    stock: 15,
+                    isActive: true
+                },
+                {
+                    id: 2,
+                    productType: mockProductType2,
+                    images: [],
+                    name: 'Camiseta de Mundial 2010',
+                    description:'Camiseta original usada en el mundial 2010',
+                    price: 5000,
+                    stock: 20,
+                    isActive: true
+                },
+                {
+                    id: 3,
+                    productType: mockProductType1,
+                    images: [],
+                    name: 'Balón de Futbol',
+                    description: 'Balón de Futbol de alta calidad',
+                    price: 3000,
+                    stock: 25,
+                    isActive: true
+                }
+            ];
+
+            // Configuramos el mock
+            mockProductRepository.find.mockResolvedValue(mockFindAllProducts);
+
+            // Obtenemos el resultado del service (ACC - ACtuar)
+            const result = await productService.findAllProducts();
+
+            // Verificamos el resultado (ASSERT - Verificar)
+            expect(result).toEqual(mockFindAllProducts);
+            expect(result.length).toBe(3);
+            expect(result[0].id).toBe(1);
+            expect(result[1].id).toBe(2);
+            expect(result[2].id).toBe(3);
+            // Verificamos que el metodo find del repositorio sea llamado
+            expect(mockProductRepository.find).toHaveBeenCalled();
+            // Verificamos que el metodo find del repositorio sea llamado con las relaciones correctas
+            expect(mockProductRepository.find).toHaveBeenCalledWith({
+                relations: ['productType', 'images'],
+            });
+        })
+        it('Buscamos todos los productos pero no hay ninguno', async () => {
+            // Configuramos el mock para que devuelva un array vacío
+            mockProductRepository.find.mockResolvedValue([]);
+
+            // Obtenemos el resultado del service (ACC - ACtuar)
+            const result = await productService.findAllProducts();
+
+            // Verificamos el resultado (ASSERT - Verificar)
+            expect(result).toEqual([]);
+            expect(result.length).toBe(0);
+        })
+    })
+
+    describe('findAllProductsByProductType', () => {
+        it('Buscar y mostrar todos los productos por tipo de producto', async () => {
+            const productTypeId = 1;
+            // Mockeamos el productType que va a tener el producto
+            const mockProductType = {
+                id: 1,
+                name: 'Pelota'
+            }
+            // Mockeamos la respuesta del repositorio
+            const mockFindAllProductsByProductType = [
+                {
+                    id: 1,
+                    productType: mockProductType,
+                    images: [],
+                    name: 'Pelota de Mundial 2010',
+                    description:'Pelota original usada en el mundial 2010',
+                    price: 10000,
+                    stock: 15,
+                    isActive: true
+                },
+                {
+                    id: 3,
+                    productType: mockProductType,
+                    images: [],
+                    name: 'Balón de Futbol',
+                    description: 'Balón de Futbol de alta calidad',
+                    price: 3000,
+                    stock: 25,
+                    isActive: true
+                }
+            ];
+
+            // Configuramos el mock
+            mockProductRepository.find.mockResolvedValue(mockFindAllProductsByProductType);
+
+            // Obtenemos el resultado del service (ACC - ACtuar)
+            const result = await productService.findAllProductsByProductType(productTypeId);
+
+            // Verificamos el resultado (ASSERT - Verificar)
+            expect(result).toEqual(mockFindAllProductsByProductType);
+            expect(result.length).toBe(2);
+            expect(result[0].id).toBe(1);
+            expect(result[1].id).toBe(3);
+            // Verificamos que el metodo find del repositorio sea llamado
+            expect(mockProductRepository.find).toHaveBeenCalled();
+            // Verificamos que el metodo find del repositorio sea llamado con las relaciones correctas
+            expect(mockProductRepository.find).toHaveBeenCalledWith({
+                relations: ['productType', 'images'],
+                where: {
+                    productType: {
+                        id: productTypeId
+                    }
+                }
+            });
+        })
+        it('Buscar productos por un tipo de producto que no tiene productos', async () => {
+            const productTypeId = 2;
+
+            // Configuramos el mock para que devuelva un array vacío
+            mockProductRepository.find.mockResolvedValue([]);
+
+            // Verificamos el resultado directamente aca, 
+            // porque si creamos una constante result el NotFoundException queda en esa linea y no llega al expect
+            await expect(productService.findAllProductsByProductType(productTypeId))
+            .rejects
+            .toThrow(NotFoundException);
+
+            // Verificamos que el metodo find del repositorio sea llamado
+            expect(mockProductRepository.find).toHaveBeenCalled();
+        })
+        it('Buscar productos por un tipo de producto que no existe', async () => {
+            const productTypeId = 999;
+
+            // Configuramos el mock para que devuelva un array vacío
+            mockProductRepository.find.mockResolvedValue([]);
+
+            // Verificamos el resultado directamente aca,
+            // porque si creamos una constante result el NotFoundException queda en esa linea y no llega al expect
+            await expect(productService.findAllProductsByProductType(productTypeId))
+            .rejects
+            .toThrow(NotFoundException);
+
+            // Verificamos que el metodo find del repositorio sea llamado
+            expect(mockProductRepository.find).toHaveBeenCalled();
+        })
+        describe('findProductsByIds', () => {
+        it('Buscar y mostrar productos por sus ids', async () => {})
+        it('Buscar productos por ids con parametro vacio', async () => {})
+        it('Buscar productos por ids que no existen', async () => {})
+        })
+    })
 })

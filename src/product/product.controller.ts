@@ -16,7 +16,6 @@ export class ProductController {
 
     @Get('carrito')  // GET /producto/carrito?ids=1,2,3
     async getProductsForCart(@Query('ids') idsParam: string) {
-        console.log('IDs recibidos en el controlador:', idsParam);
         return this.productService.findProductsByIds(idsParam);
     }
 

@@ -63,6 +63,7 @@ export class ProductService {
     }
 
     async findProductsByIds(idsParam: string): Promise<ProductEntity[]>{
+        // Los idsParam vienen en formato string "1,2,3,4"
         // Validamos que el parametro no esté vacío
         if (!idsParam || idsParam == '') {
             throw new BadRequestException('IDs de productos requeridos');
