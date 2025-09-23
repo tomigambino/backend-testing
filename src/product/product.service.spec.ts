@@ -533,7 +533,20 @@ describe('productService', () => {
             expect(mockProductRepository.save).not.toHaveBeenCalled();
         })
         it('Actualizar un producto con id inexistente devolviendo NotFoundException', async () => {
+            const productId = 999;
             
+            // Mockeamos el updateProductDto
+            const mockUpdateProductDto = {
+                productTypeId: 2,
+                name: 'Remera de Argentina',
+                description: 'Remera de Argentina usada en el mundial 2010',
+                price: 6000,
+                stock: 7,
+                isActive: true
+            }
+
+            // Mockeamos el método findProductTypeById del servicio ProductType
+            expect(productService.partialUpdateProduct(productId, mockUpdateProductDto)).rejects.toThrow(NotFoundException)
         })
     })
 })
