@@ -17,14 +17,19 @@ VALUES
 INSERT INTO tipo_producto (nombre)
 VALUES
 ('Pelota'),
-('Remeras');
+('Remeras'),
+('Botines'),
+('Medias');
 
 -- ===== PRODUCTOS =====
 -- Ahora usando la columna booleana correcta: es_activo
 INSERT INTO producto (tipo_producto, nombre, descripcion, price, stock, es_activo)
 VALUES
 (1, 'Pelota Mundial 2010', 'Pelota original del mundial 2010', 5000, 10, true),
-(2, 'Remera Entrenamiento', 'Remera de entrenamiento de fútbol', 15000, 20, true);
+(2, 'Remera Entrenamiento', 'Remera de entrenamiento de fútbol', 15000, 20, true),
+(3, 'Botines Nike', 'Botines negros Nike', 60000, 20, true),
+(3, 'Botines Puma', 'Botines blancos Puma', 55000, 20, true),
+(4, 'Medias Adidas', 'Medias de futbol adidas de color Blanco', 7000, 50, true);
 
 -- ===== IMAGENES =====
 INSERT INTO imagenes (producto_id, url, nombre_archivo, tamaño)
@@ -34,7 +39,13 @@ VALUES
 (1, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/1/Pelota%20Profesional%20-%203.webp', 'Pelota Profesional - 3.webp', '44.35KB'),
 (2, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/2/Camiseta%201.jpg', 'Camiseta - 1.jpg', '10.74KB'),
 (2, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/2/Camiseta%202.webp', 'Camiseta - 2.webp', '10.24KB'),
-(2, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/2/Camiseta%203.webp', 'Camiseta - 3.webp', '24.65KB');
+(2, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/2/Camiseta%203.webp', 'Camiseta - 3.webp', '24.65KB'),
+(3, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/3/Botines-Negros-1.webp', 'Botines-Negros-1.webp', '162KB'),
+(3, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/3/Botines-Negros-2.webp', 'Botines-Negros-2.webp', '56KB'),
+(4, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/4/Botines-Blancos-Puma-1.webp', 'Botines-Blanco-Puma-1.webp', '9KB'),
+(4, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/4/Botines-Blancos-Puma-2.webp', 'Botines-Blanco-Puma-2.webp', '7KB'),
+(5, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/5/Medias-Adidas-1.webp', 'Medias-Adidas-1.webp', '4KB'),
+(5, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/5/Medias-Adidas-2.webp', 'Medias-Adidas-2.webp', '32KB');
 
 
 -- ===== ESTADOS DE VENTA =====
