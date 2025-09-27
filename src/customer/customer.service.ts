@@ -4,6 +4,7 @@ import { CustomerEntity } from 'src/common/entities/customer.entity';
 import { Repository } from 'typeorm';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { PatchCustomerDto } from './dto/patch-customer.dto';
+import { UpdateCustomerDto } from './dto/update-customer.dto';
 
 @Injectable()
 export class CustomerService {
@@ -12,12 +13,13 @@ export class CustomerService {
         @InjectRepository(CustomerEntity) private customerRepository: Repository<CustomerEntity>,
     ){}
 
-    async createCustomer(createCustomerDto: CreateCustomerDto): Promise<CustomerEntity>{
+    async createCustomer(createCustomerDto: CreateCustomerDto, hashedPassword: string): Promise<CustomerEntity>{
         const newCustomer = this.customerRepository.create({
             firstName: createCustomerDto.firstName,
             lastName: createCustomerDto.lastName,
             phone: createCustomerDto.phone,
             email: createCustomerDto.email,
+            password: hashedPassword,
             registrationDate: new Date()
         })
 
@@ -41,7 +43,27 @@ export class CustomerService {
         return customer;
     }
 
-    async updateCustomer(id: number, updateCustomerDto: CreateCustomerDto): Promise<CustomerEntity> {
+    async findCustomerByEmail(email: string): Promise<CustomerEntity> {
+        const customer = await this.customerRepository.findOne({
+            where: { email: email },
+        });
+
+        if (!customer) {
+            throw new NotFoundException(`Customer with email ${email} not found`);
+        }
+
+        return customer;
+    }
+
+    async existsByEmail(email: string): Promise<boolean> {
+        const customer = await this.customerRepository.findOne({
+            where: { email: email },
+        });
+
+        return !!customer;
+    }
+
+    async updateCustomer(id: number, updateCustomerDto: UpdateCustomerDto): Promise<CustomerEntity> {
         const customer = await this.findCustomerById(id);
         
         customer.firstName = updateCustomerDto.firstName;

@@ -1,10 +1,8 @@
-import { PartialType } from "@nestjs/mapped-types";
-import { IsNotEmpty, IsOptional, IsString, Length } from "class-validator";
-import { LoginCustomerDto } from "src/auth/dto/login-user.dto";
+import { IsEmail, IsNotEmpty, IsString, Length } from "class-validator";
 
 // Extiende las validaciones del LoginCustomerDto
 // Agrega las propiedades adicionales necesarias para el registro
-export class CreateCustomerDto extends PartialType(LoginCustomerDto) { 
+export class UpdateCustomerDto { 
     @IsString()
     @IsNotEmpty({ message: 'El nombre es obligatorio' })
     @Length(2, 50, { message: 'El nombre debe tener entre 2 y 50 caracteres' })
@@ -17,5 +15,7 @@ export class CreateCustomerDto extends PartialType(LoginCustomerDto) {
     @IsString({ message: 'El telefono debe ser un texto.' })
     phone: string;
 
-    // La fecha de alta la obtendremos en el servicio
+    @IsEmail()
+    @IsNotEmpty()
+    email: string;
 }

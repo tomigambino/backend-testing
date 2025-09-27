@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { ArrayNotEmpty, IsArray, IsDate, IsDefined, IsNumber, IsOptional } from "class-validator";
+import { ArrayNotEmpty, IsArray, IsDefined, IsNumber } from "class-validator";
 
 export class CreateSaleDto{
     //Fecha de venta la vamos a obtener en el servicio ya que se asigna automáticamente el mismo dia

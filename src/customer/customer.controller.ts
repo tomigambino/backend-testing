@@ -2,16 +2,18 @@ import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Put } from
 import { CustomerService } from './customer.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { PatchCustomerDto } from './dto/patch-customer.dto';
+import { UpdateCustomerDto } from './dto/update-customer.dto';
 
 @Controller('cliente')
 export class CustomerController {
 
     constructor(private customerService: CustomerService) {  }
 
-    @Post()
-    createCustomer(@Body() createCustomerDto: CreateCustomerDto){
-        return this.customerService.createCustomer(createCustomerDto);
-    } 
+    // El createCustomer se va a hacer desde el register
+    //@Post()
+    //createCustomer(@Body() createCustomerDto: CreateCustomerDto){
+        //return this.customerService.createCustomer(createCustomerDto);
+    //} 
 
     @Get()
     getAllCustomer(){
@@ -24,8 +26,8 @@ export class CustomerController {
     }
 
     @Put(':id')
-    updateCustomer(@Param('id') customerId, @Body() createCustomerDto: CreateCustomerDto){
-        return this.customerService.updateCustomer(customerId, createCustomerDto);
+    updateCustomer(@Param('id') customerId, @Body() updateCustomerDto: UpdateCustomerDto){
+        return this.customerService.updateCustomer(customerId, updateCustomerDto);
     }
 
     @Patch(':id')

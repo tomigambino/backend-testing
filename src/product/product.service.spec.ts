@@ -549,4 +549,28 @@ describe('productService', () => {
             expect(productService.partialUpdateProduct(productId, mockUpdateProductDto)).rejects.toThrow(NotFoundException)
         })
     })
+    describe('deleteProduct', () => {
+        it('Eliminar un producto existente', async () => {
+            const productId = 1;
+
+            // Mockeamos el método delete del repositorio
+            mockProductRepository.delete.mockResolvedValue({ affected: 1 });
+
+            // La función no devuelve nada, por lo que esperamos que el resultado sea undefined
+            await expect(productService.deleteProduct(productId))
+            .resolves
+            .toBeUndefined();
+            
+        })
+        it('debería lanzar NotFoundException si el producto no existe', async () => {
+            const productId = 99;
+
+            // Mockeamos el delete para simular que no borró nada
+            mockProductRepository.delete.mockResolvedValue({ affected: 0 });
+
+            await expect(productService.deleteProduct(productId))
+                .rejects
+                .toThrow(NotFoundException);
+        });
+    })
 })
