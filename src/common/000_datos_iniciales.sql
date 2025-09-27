@@ -69,12 +69,34 @@ VALUES
 INSERT INTO venta (fecha_venta, cliente_id, pago_id, total, estado_venta_id)
 VALUES
 (CURRENT_DATE, 1, NULL, 5000, 1),
-(CURRENT_DATE, 2, NULL, 15000, 1);
+(CURRENT_DATE, 2, NULL, 15000, 1),
+-- Venta 3: Juan compra Botines Nike
+(CURRENT_DATE, 1, NULL, 60000, 1),
+-- Venta 4: María compra Medias Adidas x2
+(CURRENT_DATE, 2, NULL, 14000, 2),
+-- Venta 5: Juan compra Remera + Medias
+(CURRENT_DATE, 1, NULL, 22000, 1),
+-- Venta 6: María compra Botines Puma
+(CURRENT_DATE, 2, NULL, 55000, 3),
+-- Venta 7: Juan compra Pelota + Remera
+(CURRENT_DATE, 1, NULL, 20000, 1);
 
 -- ===== DETALLE DE VENTA =====
 INSERT INTO detalle_venta (venta, producto, cantidad, total_detalle)
 VALUES
 (1, 1, 1, 5000),
-(2, 2, 1, 15000);
+(2, 2, 1, 15000),
+-- Venta 3
+(3, 3, 1, 60000),
+-- Venta 4
+(4, 5, 2, 14000),
+-- Venta 5
+(5, 2, 1, 15000),
+(5, 5, 1, 7000),
+-- Venta 6
+(6, 4, 1, 55000),
+-- Venta 7
+(7, 1, 1, 5000),
+(7, 2, 1, 15000);
 
 
