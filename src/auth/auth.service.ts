@@ -46,4 +46,13 @@ export class AuthService {
       throw new UnauthorizedException('Token inválido o expirado');
     }
   }
+
+  async getCustomerId(token): Promise<{ customerId: number }> {
+    try {
+      const payload = this.jwtService.getPayload(token);
+      return { customerId: payload.customerId };
+    } catch (e) {
+      throw new UnauthorizedException('Token inválido o expirado');
+    }
+  }
 }

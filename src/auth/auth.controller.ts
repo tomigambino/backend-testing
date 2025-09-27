@@ -25,4 +25,13 @@ export class AuthController {
         const token = authHeader.split(' ')[1];
         return this.authService.validateToken(token);
     }
+
+    @Get('getCustomerId')
+    async getCustomerId(@Req() req) {
+        const authHeader = req.headers['authorization'];
+        if (!authHeader) throw new UnauthorizedException('No token provided');
+
+        const token = authHeader.split(' ')[1];
+        return this.authService.getCustomerId(token);
+    }
 }
