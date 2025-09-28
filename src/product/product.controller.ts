@@ -3,6 +3,7 @@ import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { PatchProductDto } from './dto/patch-product.dto';
 import { ParseIntPipe } from '@nestjs/common';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Controller('producto')
 export class ProductController {
@@ -22,6 +23,11 @@ export class ProductController {
     @Get(':id')
     getProduct(@Param('id') productId: number) {
         return this.productService.findProductById(productId);
+    }
+
+    @Get()
+    getProductsByPagination(@Query() paginationDto: PaginationDto) {
+        return this.productService.findProductsByPagination(paginationDto);
     }
 
     @Get()

@@ -4,6 +4,7 @@ import { CreateSaleDto } from './dto/create-sale.dto';
 import { SaleEntity } from 'src/common/entities/sale';
 import { UpdateSaleDto } from './dto/update-sale.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { PaginatedSales } from 'src/common/interfaces/paginatedSales-interface';
 
 @Controller('venta')
 export class SaleController {
@@ -16,10 +17,10 @@ export class SaleController {
    }
 
    @Get()
-   async findSalesByPagination(@Query() paginationDto: PaginationDto): Promise<SaleEntity[]> {
+   async findSalesByPagination(@Query() paginationDto: PaginationDto): Promise<PaginatedSales> {
        return this.saleService.findSalesByPagination(paginationDto);
    }
-   
+
    @Get()
    async findSales(): Promise<SaleEntity[]> {
        return this.saleService.findSales();

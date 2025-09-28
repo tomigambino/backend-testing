@@ -5,6 +5,7 @@ import { ProductEntity } from 'src/common/entities/product.entity';
 import { Repository } from 'typeorm';
 import { ProductTypeService } from 'src/productType/productType.service';
 import { PatchProductDto } from './dto/patch-product.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class ProductService {
@@ -49,6 +50,17 @@ export class ProductService {
         });
     }
 
+    async findProductsByPagination(paginationDto: PaginationDto) {
+        const { page, limit } = paginationDto;
+        const [data, total] = await this.productRepository.findAndCount({
+            relations: ['productType', 'images'],
+            order: { id: 'DESC' },
+            skip: (page - 1) * limit,
+            take: limit
+        });
+        return { data, total, page, limit };
+    }
+    
     async findAllProductsByProductType(productTypeId: number) {
         const products = await this.productRepository.find({
             where: { productType: {id: productTypeId} },

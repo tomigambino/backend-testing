@@ -11,6 +11,7 @@ import { SaleStateService } from 'src/saleStatus/saleStatus.service';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { MPItem } from 'src/common/interfaces/MPItem-interface';
 import { PayEntity } from 'src/common/entities/pay.entity';
+import { PaginatedSales } from 'src/common/interfaces/paginatedSales-interface';
 
 @Injectable()
 export class SaleService {
@@ -64,14 +65,15 @@ export class SaleService {
         });
     }
 
-    async findSalesByPagination(paginationDto: PaginationDto): Promise<SaleEntity[]> {
+    async findSalesByPagination(paginationDto: PaginationDto): Promise<PaginatedSales> {
         const { page, limit } = paginationDto;
-        return this.saleRepository.find({
+        const [data, total] = await this.saleRepository.findAndCount({
             relations: ['customer', 'saleDetail', 'saleDetail.product', 'saleDetail.product.images', 'saleStatus'],
             order: { saleDate: 'DESC' },
             skip: (page - 1) * limit,
             take: limit
         });
+        return { data, total, page, limit };
     }
 
     async findSaleById(saleId: number): Promise<SaleEntity> {
