@@ -110,6 +110,7 @@ describe('SaleDetailService', () => {
             it('Buscar todos los detalle de venta y mostrarlos', async () => {
                 const mockSaleDetails = [
                     {
+                        id: 1,
                         product: { id: 1, name: 'Pelota', price: 5000 },
                         quantity: 2,
                         totalDetail: 10000,
@@ -215,7 +216,8 @@ describe('SaleDetailService', () => {
 
                 jest.spyOn(saleDetailService, 'findSaleDetailById').mockResolvedValue(mockSaleDetail);
                 mockSaleDetailRepository.save.mockResolvedValue({
-                    ...mockSaleDetail, // Ver que hace esto
+                    id: 1,
+                    product: { id: 1, name: 'Pelota', price: 5000 },
                     quantity: createSaleDetailDto.quantity,
                     totalDetail: createSaleDetailDto.quantity * mockProduct.price,
                 });
