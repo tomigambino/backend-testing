@@ -48,7 +48,7 @@ VALUES
 (3, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/3/Paleta-Nox-AT10-2.jpg', 'Paleta-Nox-AT10-2.jpg', '77KB'),
 (4, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/4/Pelota-ODEA-1.webp', 'Pelota-ODEA-1.webp', '40KB'),
 (4, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/4/Pelota-ODEA-2.webp', 'Pelota-ODEA-2.webp', '13KB'),
-(4, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/4/BPelota-ODEA-3.webp', 'Pelota-ODEA-3.webp', '26KB'),
+(4, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/4/Pelota-ODEA-3.webp', 'Pelota-ODEA-3.webp', '26KB'),
 (5, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/5/Pelota-NOX-1.webp', 'Pelota-NOX-1.webp', '22KB'),
 (5, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/5/Pelota-NOX-2.webp', 'Pelota-NOX-2.webp', '22KB'),
 (6, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/6/Munequera-ADIDAS-1.jpg', 'Munequera-ADIDAS-1.jpg', '22KB'),
