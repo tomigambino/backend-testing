@@ -46,7 +46,7 @@ describe('SaleDetailService', () => {
 
 
     describe('createSaleDetail', () => {
-        it('Crear un detalle de venta y devolverlo', async () => {
+        it('Crear un detalle de venta correctamente y devolverlo', async () => {
             // Se define el dto que se le va a pasar a la función createSaleDetail()
             const createSaleDetailDto = {
                 productId: 1,

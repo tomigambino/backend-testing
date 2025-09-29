@@ -42,7 +42,7 @@ describe('productService', () => {
     })
 
     describe('createProduct', () => {
-        it('Crear un producto y mostrarlo', async () => {
+        it('Crear un producto correctamente y mostrarlo', async () => {
             // Definimos el dto que le vamos a pasar a la función createProduct()
             const createProductDto = {
                 productTypeId: 1,
