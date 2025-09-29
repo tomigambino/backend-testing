@@ -20,7 +20,7 @@ export class AuthService {
         if (userExists) throw new BadRequestException('Email ya registrado');
     }
 
-    const hashedPassword = await hash(dto.password, 10);
+    const hashedPassword = await hash(dto.password!, 10);
     return await this.customerService.createCustomer(dto, hashedPassword);
   }
 
