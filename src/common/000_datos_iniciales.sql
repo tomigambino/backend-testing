@@ -16,36 +16,50 @@ VALUES
 -- ===== TIPOS DE PRODUCTO =====
 INSERT INTO tipo_producto (nombre)
 VALUES
-('Pelota'),
-('Remeras'),
-('Botines'),
-('Medias');
+('Paletas'),
+('Pelotas'),
+('Muñequeras'),
+('Rodilleras'),
+('Gorras');
 
 -- ===== PRODUCTOS =====
--- Ahora usando la columna booleana correcta: es_activo
 INSERT INTO producto (tipo_producto, nombre, descripcion, price, stock, es_activo)
 VALUES
-(1, 'Pelota Mundial 2010', 'Pelota original del mundial 2010', 5000, 10, true),
-(2, 'Remera Entrenamiento', 'Remera de entrenamiento de fútbol', 15000, 20, true),
-(3, 'Botines Nike', 'Botines negros Nike', 60000, 20, true),
-(3, 'Botines Puma', 'Botines blancos Puma', 55000, 20, true),
-(4, 'Medias Adidas', 'Medias de futbol adidas de color Blanco', 7000, 50, true);
+(1, 'Paleta Adidas Metalbone 3.3', 'Paleta de pádel Adidas Metalbone 3.3 de alto rendimiento', 95000, 10, true),
+(1, 'Paleta Bullpadel Vertex 03 Comfort', 'Paleta Bullpadel Vertex 03 Comfort, potencia y control', 85000, 12, true),
+(1, 'Paleta Nox AT10', 'Paleta Nox AT10 diseñada junto a Agustín Tapia', 90000, 8, true),
+(2, 'Pelotas ODEA x3', 'Pack de 3 pelotas ODEA para pádel', 7000, 40, true),
+(2, 'Pelotas NOX x3', 'Pack de 3 pelotas NOX para pádel', 7500, 35, true),
+(3, 'Muñequera Adidas', 'Muñequera absorbente Adidas para pádel', 2500, 50, true),
+(4, 'Rodillera Marca', 'Rodillera elástica de soporte deportivo', 6000, 20, true),
+(3, 'Muñequeras Bullpadel', 'Pack de muñequeras Bullpadel', 3000, 40, true),
+(5, 'Gorra Bullpadel', 'Gorra deportiva Bullpadel', 5000, 25, true),
+(5, 'Gorra Nox', 'Gorra deportiva Nox', 5200, 25, true);
 
 -- ===== IMAGENES =====
 INSERT INTO imagenes (producto_id, url, nombre_archivo, tamaño)
 VALUES
-(1, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/1/Pelota%20Profesional%20-%201.jpg', 'Pelota Profesional - 1.jpg', '135.78KB'),
-(1, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/1/Pelota%20Profesional%20-%202.jpg', 'Pelota Profesional - 2.jpg', '137.01KB'),
-(1, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/1/Pelota%20Profesional%20-%203.webp', 'Pelota Profesional - 3.webp', '44.35KB'),
-(2, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/2/Camiseta%201.jpg', 'Camiseta - 1.jpg', '10.74KB'),
-(2, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/2/Camiseta%202.webp', 'Camiseta - 2.webp', '10.24KB'),
-(2, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/2/Camiseta%203.webp', 'Camiseta - 3.webp', '24.65KB'),
-(3, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/3/Botines-Negros-1.webp', 'Botines-Negros-1.webp', '162KB'),
-(3, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/3/Botines-Negros-2.webp', 'Botines-Negros-2.webp', '56KB'),
-(4, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/4/Botines-Blancos-Puma-1.webp', 'Botines-Blanco-Puma-1.webp', '9KB'),
-(4, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/4/Botines-Blancos-Puma-2.webp', 'Botines-Blanco-Puma-2.webp', '7KB'),
-(5, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/5/Medias-Adidas-1.webp', 'Medias-Adidas-1.webp', '4KB'),
-(5, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/5/Medias-Adidas-2.webp', 'Medias-Adidas-2.webp', '32KB');
+(1, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/1/Paleta-Adidas-Metalbone3.3-3.jpg', 'Paleta-Adidas-Metalbone3.3-1.jpg', '35KB'),
+(1, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/1/Paleta-Adidas-Metalbone3.3-2.jpg', 'Paleta-Adidas-Metalbone3.3-2.jpg', '140KB'),
+(1, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/1/Paleta-Adidas-Metalbone3.3-1.jpg', 'Paleta-Adidas-Metalbone3.3-3.jpg', '62KB'),
+(2, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/2/Paleta-Bullpadel-Vertex03Comfort-1.jpg', 'Paleta-Bullpadel-Vertex03Comfort-1.jpg', '79KB'),
+(2, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/2/Paleta-Bullpadel-Vertex03Comfort-2.jpg', 'Paleta-Bullpadel-Vertex03Comfort-2.jpg', '286KB'),
+(3, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/3/Paleta-Nox-AT10-1.jpg', 'Paleta-Nox-AT10-1.jpg', '56KB'),
+(3, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/3/Paleta-Nox-AT10-2.jpg', 'Paleta-Nox-AT10-2.jpg', '77KB'),
+(4, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/4/Pelota-ODEA-1.webp', 'Pelota-ODEA-1.webp', '40KB'),
+(4, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/4/Pelota-ODEA-2.webp', 'Pelota-ODEA-2.webp', '13KB'),
+(4, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/4/BPelota-ODEA-3.webp', 'Pelota-ODEA-3.webp', '26KB'),
+(5, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/5/Pelota-NOX-1.webp', 'Pelota-NOX-1.webp', '22KB'),
+(5, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/5/Pelota-NOX-2.webp', 'Pelota-NOX-2.webp', '22KB'),
+(6, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/6/Munequera-ADIDAS-1.jpg', 'Munequera-ADIDAS-1.jpg', '22KB'),
+(6, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/6/Munequera-ADIDAS-2.jpg', 'Munequera-ADIDAS-2.jpg', '22KB'),
+(7, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/7/Rodillera-Marca-1.webp', 'Rodillera-Marca-1.webp', '10KB'),
+(8, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/8/Munequera-BULLPADEL-1.webp', 'Munequera-BULLPADEL-1.webp', '22KB'),
+(8, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/8/Munequera-BULLPADEL-2.webp', 'Munequera-BULLPADEL-2.webp', '22KB'),
+(9, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/9/Gorra-BULLPADEL-1.jpg', 'Gorra-BULLPADEL-1.jpg', '22KB'),
+(9, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/9/Gorra-BULLPADEL-2.webp', 'Gorra-BULLPADEL-2.webp', '22KB'),
+(10, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/10/Gorra-NOX-1.webp', 'Gorra-NOX-1.webp', '22KB'),
+(10, 'https://hodcwckiqgtejtxpdyzm.supabase.co/storage/v1/object/public/images-testing/products/10/Gorra-NOX-2.webp', 'Gorra-NOX-2.webp', '22KB');
 
 
 -- ===== ESTADOS DE VENTA =====
@@ -57,46 +71,41 @@ VALUES
 ('Devuelto'),
 ('Cancelado');
 
--- ===== PAGOS =====
--- Solo funcionará si la tabla 'pagos' ya existe (migraciones corridas)
---INSERT INTO pagos (referencia_mp_id, init_point_mp_id, payment_method_mp_id, state_mp_id, monto, fecha_creacion, fecha_aprobacion)
---VALUES
---('PREF-TEST-001', 'https://www.mercadopago.com/init_point_test1', NULL, 'pending', 5000, NOW(), NULL),
---('PREF-TEST-002', 'https://www.mercadopago.com/init_point_test2', NULL, 'pending', 15000, NOW(), NULL),
---('123456', 'https://www.mercadopago.com/init_point_test3', NULL, 'pending', 5000, NOW(), NOW());
-
 -- ===== VENTAS =====
 INSERT INTO venta (fecha_venta, cliente_id, pago_id, total, estado_venta_id)
 VALUES
-(CURRENT_DATE, 1, NULL, 5000, 1),
-(CURRENT_DATE, 2, NULL, 15000, 1),
--- Venta 3: Juan compra Botines Nike
-(CURRENT_DATE, 1, NULL, 60000, 1),
--- Venta 4: María compra Medias Adidas x2
-(CURRENT_DATE, 2, NULL, 14000, 2),
--- Venta 5: Juan compra Remera + Medias
-(CURRENT_DATE, 1, NULL, 22000, 1),
--- Venta 6: María compra Botines Puma
-(CURRENT_DATE, 2, NULL, 55000, 3),
--- Venta 7: Juan compra Pelota + Remera
-(CURRENT_DATE, 1, NULL, 20000, 1);
+-- Juan compra Paleta Adidas
+(CURRENT_DATE, 1, NULL, 95000, 1),
+-- María compra Muñequeras Bullpadel
+(CURRENT_DATE, 2, NULL, 3000, 1),
+-- Juan compra Pelotas ODEA
+(CURRENT_DATE, 1, NULL, 7000, 1),
+-- María compra Gorra Nox
+(CURRENT_DATE, 2, NULL, 5200, 2),
+-- Juan compra Paleta Nox AT10 + Muñequera Adidas
+(CURRENT_DATE, 1, NULL, 92500, 1),
+-- María compra Paleta Bullpadel
+(CURRENT_DATE, 2, NULL, 85000, 3),
+-- Juan compra Gorra Bullpadel + Pelotas NOX
+(CURRENT_DATE, 1, NULL, 12500, 1);
 
+-- ===== DETALLE DE VENTA =====
 -- ===== DETALLE DE VENTA =====
 INSERT INTO detalle_venta (venta, producto, cantidad, total_detalle)
 VALUES
-(1, 1, 1, 5000),
-(2, 2, 1, 15000),
--- Venta 3
-(3, 3, 1, 60000),
--- Venta 4
-(4, 5, 2, 14000),
--- Venta 5
-(5, 2, 1, 15000),
-(5, 5, 1, 7000),
--- Venta 6
-(6, 4, 1, 55000),
--- Venta 7
-(7, 1, 1, 5000),
-(7, 2, 1, 15000);
-
-
+-- Venta 1: Juan compra Paleta Adidas
+(1, 1, 1, 95000),
+-- Venta 2: María compra Muñequeras Bullpadel
+(2, 8, 1, 3000),
+-- Venta 3: Juan compra Pelotas ODEA
+(3, 4, 1, 7000),
+-- Venta 4: María compra Gorra Nox
+(4, 10, 1, 5200),
+-- Venta 5: Juan compra Paleta Nox AT10 + Muñequera Adidas
+(5, 3, 1, 90000),
+(5, 6, 1, 2500),
+-- Venta 6: María compra Paleta Bullpadel
+(6, 2, 1, 85000),
+-- Venta 7: Juan compra Gorra Bullpadel + Pelotas NOX
+(7, 9, 1, 5000),
+(7, 5, 1, 7500);
