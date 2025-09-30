@@ -11,6 +11,7 @@ describe('productService', () => {
     const mockProductRepository = {
             find: jest.fn(),
             findOne: jest.fn(),
+            findAndCount: jest.fn(),
             create: jest.fn(),
             update: jest.fn(),
             save: jest.fn(),
@@ -267,9 +268,11 @@ describe('productService', () => {
             const mockProductType = {
                 id: 1,
                 name: 'Pelota'
-            }
-            // Mockeamos la respuesta del repositorio
-            const mockFindAllProductsByProductType = [
+            } 
+
+            // Mockeamos la respuesta del final del servicio
+            const mockFindAllProductsByProductType = 
+            {data: [
                 {
                     id: 1,
                     productType: mockProductType,
@@ -290,10 +293,15 @@ describe('productService', () => {
                     stock: 25,
                     isActive: true
                 }
-            ];
+            ],
+            total: 2,
+            page: 1,
+            limit: 6};
+
+            mockProductTypeService.findProductTypeById.mockResolvedValue(mockProductType)
 
             // Configuramos el mock
-            mockProductRepository.find.mockResolvedValue(mockFindAllProductsByProductType);
+            mockProductRepository.findAndCount.mockResolvedValue([mockFindAllProductsByProductType.data, mockFindAllProductsByProductType.total]);
 
             const mockPaginationDto = {
                 page: 1,
@@ -304,52 +312,63 @@ describe('productService', () => {
             const result = await productService.findAllProductsByProductType(productTypeId, mockPaginationDto);
 
             // Verificamos el resultado (ASSERT - Verificar)
-            expect(result.data).toEqual(mockFindAllProductsByProductType);
-            expect(result.data.length).toBe(2);
+            expect(result).toEqual(mockFindAllProductsByProductType);
+            expect(result.total).toBe(2);
             expect(result.data[0].id).toBe(1);
             expect(result.data[1].id).toBe(3);
             // Verificamos que el metodo find del repositorio sea llamado
-            expect(mockProductRepository.find).toHaveBeenCalled();
+            expect(mockProductRepository.findAndCount).toHaveBeenCalled();
             // Verificamos que el metodo find del repositorio sea llamado con las relaciones correctas
-            expect(mockProductRepository.find).toHaveBeenCalledWith({
+            expect(mockProductRepository.findAndCount).toHaveBeenCalledWith({
+                where: { productType: {id: productTypeId} },
                 relations: ['productType', 'images'],
-                where: {
-                    productType: {
-                        id: productTypeId
-                    }
-                }
+                order: { id: 'ASC' },
+                skip: (mockPaginationDto.page - 1) * mockPaginationDto.limit,
+                take: mockPaginationDto.limit
             });
         })
         it('Buscar productos por un tipo de producto vacío', async () => {
             const productTypeId = 2;
-
-            // Configuramos el mock para que devuelva un array vacío
-            mockProductRepository.find.mockResolvedValue([]);
-
             const mockPaginationDto = {
                 page: 1,
                 limit: 6,
             }
 
-            // Verificamos el resultado directamente aca, 
-            // porque si creamos una constante result el NotFoundException queda en esa linea y no llega al expect
-            await expect(productService.findAllProductsByProductType(productTypeId, mockPaginationDto))
-            .rejects
-            .toThrow(NotFoundException);
+            // Configuramos el mock para que devuelva un array vacío
+            mockProductRepository.findAndCount.mockResolvedValue([[], 0]);
+
+            // Mockeamos la respuesta del service
+            const mockFindAllProductByProductType = {
+                data: [],
+                total: 0,
+                page: mockPaginationDto.page,
+                limit: mockPaginationDto.limit
+            }
+            
+
+            // Verificamos el resultado 
+            const result = await productService.findAllProductsByProductType(productTypeId, mockPaginationDto)
+
+            expect(result).toEqual(mockFindAllProductByProductType)
 
             // Verificamos que el metodo find del repositorio sea llamado
-            expect(mockProductRepository.find).toHaveBeenCalled();
+            expect(mockProductRepository.findAndCount).toHaveBeenCalledWith({
+                where: { productType: { id: productTypeId } },
+                relations: ['productType', 'images'],
+                order: { id: 'ASC' },
+                skip: 0,
+                take: 6
+            });
         })
         it('Buscar productos por un tipo de producto que no existe', async () => {
             const productTypeId = 999;
-
-            // Configuramos el mock para que devuelva un array vacío
-            mockProductRepository.find.mockResolvedValue([]);
-
             const mockPaginationDto = {
                 page: 1,
                 limit: 6,
             }
+
+            mockProductTypeService.findProductTypeById.mockRejectedValue(new NotFoundException(`Product Type with ID ${productTypeId} not found`))
+
 
             // Verificamos el resultado directamente aca,
             // porque si creamos una constante result el NotFoundException queda en esa linea y no llega al expect
@@ -357,8 +376,8 @@ describe('productService', () => {
             .rejects
             .toThrow(NotFoundException);
 
-            // Verificamos que el metodo find del repositorio sea llamado
-            expect(mockProductRepository.find).toHaveBeenCalled();
+            // Verificamos que el metodo find del repositorio NO sea llamado
+            expect(mockProductRepository.findAndCount).not.toHaveBeenCalled();
         })
         
     })
