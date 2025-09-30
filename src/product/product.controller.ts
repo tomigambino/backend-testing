@@ -38,8 +38,9 @@ export class ProductController {
     @Get('tipo/:productTypeId')
     async findAllByProductType(
         @Param('productTypeId', ParseIntPipe) productTypeId: number,
+        @Query() paginationDto: PaginationDto
     ) {
-        return this.productService.findAllProductsByProductType(productTypeId);
+        return this.productService.findAllProductsByProductType(productTypeId, paginationDto);
     }
 
     

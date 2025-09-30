@@ -54,24 +54,25 @@ export class ProductService {
         const { page, limit } = paginationDto;
         const [data, total] = await this.productRepository.findAndCount({
             relations: ['productType', 'images'],
-            order: { id: 'DESC' },
+            order: { id: 'ASC' },
             skip: (page - 1) * limit,
             take: limit
         });
         return { data, total, page, limit };
     }
     
-    async findAllProductsByProductType(productTypeId: number) {
-        const products = await this.productRepository.find({
+    async findAllProductsByProductType(productTypeId: number, paginationDto: PaginationDto) {
+        const { page, limit } = paginationDto;
+        await this.productTypeService.findProductTypeById(productTypeId); // Verifica si el tipo de producto existe
+        const [data, total] = await this.productRepository.findAndCount({
             where: { productType: {id: productTypeId} },
             relations: ['productType', 'images'],
+            order: { id: 'ASC' },
+            skip: (page - 1) * limit,
+            take: limit
         });
-
-        if (!products || products.length === 0) {
-            throw new NotFoundException( `Not found products for this product type ${productTypeId}`);
-        }
-
-        return products;
+        return { data, total, page, limit };
+        // En caso de que no haya ningún producto, data será un array vacío y total será 0
     }
 
     async findProductsByIds(idsParam: string): Promise<ProductEntity[]>{
