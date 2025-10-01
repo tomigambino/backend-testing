@@ -29,8 +29,7 @@ export class SaleDetailService {
             totalDetail: detailTotal
         });
 
-        await this.saleDetailRepository.save(newSaleDetail);
-        return newSaleDetail;
+        return await this.saleDetailRepository.save(newSaleDetail);
     }
 
     async findAllSaleDetails(): Promise<SaleDetailEntity[]> {
