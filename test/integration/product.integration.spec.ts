@@ -38,7 +38,7 @@ describe('Product integration tests', () => {
         });
     });
 
-    describe('POST /product', () => {
+    describe('POST /producto', () => {
         it('Mostrar la creación correcta de un producto', async () => {
             // Definimos el DTO manualmente
             const createProductDto = {
@@ -51,7 +51,7 @@ describe('Product integration tests', () => {
             }
 
             const response = await request(app.getHttpServer())
-                            .post('/product')
+                            .post('/producto')
                             .send(createProductDto)
                             .expect(201);
             
@@ -61,10 +61,9 @@ describe('Product integration tests', () => {
                 productType: {
                     id: 1,
                     name: 'Paletas',
-                    description: 'Tipo de producto: paletas de pádel',
                 },
                 name: createProductDto.name,
-                descrption: createProductDto.description,
+                description: createProductDto.description,
                 price: createProductDto.price,
                 stock: createProductDto.stock,
                 isActive: createProductDto.isActive
