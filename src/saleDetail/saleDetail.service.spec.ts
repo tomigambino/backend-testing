@@ -126,15 +126,14 @@ describe('SaleDetailService', () => {
                 // Configuramos el mock del repositorio
                 mockSaleDetailRepository.find.mockResolvedValue(mockSaleDetails);
 
-                // Act
+                // Obtenemos el resultado de la función del servicio
                 const result = await saleDetailService.findAllSaleDetails();
 
-                // Assert
+                // Verificamos el resultado
                 expect(result).toEqual(mockSaleDetails);
                 expect(mockSaleDetailRepository.find).toHaveBeenCalledWith({
                 relations: ['product'],
                 });
-                
             })
         })
 
