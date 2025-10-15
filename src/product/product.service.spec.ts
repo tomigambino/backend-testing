@@ -88,10 +88,10 @@ describe('productService', () => {
             mockProductRepository.create.mockReturnValue(mockCreatedProduct)
             mockProductRepository.save.mockResolvedValue(mockSaveProduct)
 
-            // Obtenemos el resultado del service (ACC - ACtuar)
+            // Obtenemos el resultado del service 
             const result = await productService.createProduct(createProductDto)
 
-            // Verificamos el resultado (ASSERT - Verificar)
+            // Verificamos el resultado 
             expect(result).toEqual(mockSaveProduct)
             expect(result.images).toEqual([]);
             expect(mockProductTypeService.findProductTypeById)

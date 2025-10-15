@@ -63,7 +63,7 @@ describe('SaleDetailService', () => {
             // Total que esperamos
             const expectedTotal = createSaleDetailDto.quantity * mockProduct.price;
             
-            // Mock del objeto creado por el repo
+            // Mock del objeto creado por el repositorio
             const mockCreatedSaleDetail = {
                 product: mockProduct,
                 quantity: createSaleDetailDto.quantity,
@@ -84,10 +84,10 @@ describe('SaleDetailService', () => {
             mockSaleDetailRepository.create.mockReturnValue(mockCreatedSaleDetail);
             mockSaleDetailRepository.save.mockResolvedValue(mockSavedSaleDetail);
 
-            // Obtenemos el resultado del servicio (ACC -Actuar)
+            // Obtenemos el resultado del servicio 
             const result = await saleDetailService.createSaleDetail(createSaleDetailDto)
 
-            // Verificamos el resulado (ASSERT - Verificar)
+            // Verificamos el resulado 
             expect(result).toEqual(mockSavedSaleDetail);
 
             // Controla las llamadas al buscar el producto por id
