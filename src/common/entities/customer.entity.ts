@@ -1,7 +1,9 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Role } from "../roles.enum";
 
 @Entity('cliente')
 export class CustomerEntity extends BaseEntity{
+
     @PrimaryGeneratedColumn({ name: 'id' })
     id: number;
 
@@ -22,4 +24,11 @@ export class CustomerEntity extends BaseEntity{
 
     @Column({ name: 'fecha_alta', type: 'date' })
     registrationDate: Date;
+
+    @Column({
+        type: 'enum',
+        enum: Role,
+        default: Role.User, // valor por defecto
+    })
+    role: Role;
 }
