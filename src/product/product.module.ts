@@ -4,11 +4,13 @@ import { ProductEntity } from "src/common/entities/product.entity";
 import { ProductController } from "./product.controller";
 import { ProductService } from "./product.service";
 import { ProductTypeModule } from "src/productType/productType.module";
+import { AuthModule } from "src/auth/auth.module";
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([ProductEntity]),
-    ProductTypeModule // Importa el módulo, no solo el servicio
+    ProductTypeModule,
+    AuthModule
   ],
   controllers: [ProductController],
   providers: [ProductService],

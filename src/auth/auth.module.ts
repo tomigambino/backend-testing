@@ -1,14 +1,18 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtService } from './jwt.service';
 import { CustomerModule } from 'src/customer/customer.module';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtAuthModule } from 'src/common/jwt/jwt.module';
+import { AuthGuard } from './auth.guard';
 
 @Module({
-    imports: [CustomerModule, JwtModule],
+    imports: [
+        forwardRef(() => CustomerModule), 
+        JwtAuthModule
+    ],
     controllers: [AuthController],
-    providers: [AuthService, JwtService],
-    exports: [AuthService], // opcional, si lo usás en otros módulos
+    providers: [AuthService, JwtService, AuthGuard],
+    exports: [AuthService, AuthGuard, JwtService, CustomerModule],
 })
 export class AuthModule { }
