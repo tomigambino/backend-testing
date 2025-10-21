@@ -5,10 +5,12 @@ import { MercadoPagoService } from './mp.service';
 import { SaleModule } from 'src/sale/sale.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PayEntity } from 'src/common/entities/pay.entity';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [SaleModule,
-    TypeOrmModule.forFeature([PayEntity])
+    TypeOrmModule.forFeature([PayEntity]),
+    AuthModule
   ],
   controllers: [PayController],
   providers: [PayService, MercadoPagoService]

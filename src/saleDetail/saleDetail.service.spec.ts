@@ -61,9 +61,9 @@ describe('SaleDetailService', () => {
             }
 
             // Total que esperamos
-            const expectedTotal = createSaleDetailDto.quantity*mockProduct.price;
+            const expectedTotal = createSaleDetailDto.quantity * mockProduct.price;
             
-            // Mock del objeto creado por el repo
+            // Mock del objeto creado por el repositorio
             const mockCreatedSaleDetail = {
                 product: mockProduct,
                 quantity: createSaleDetailDto.quantity,
@@ -84,11 +84,11 @@ describe('SaleDetailService', () => {
             mockSaleDetailRepository.create.mockReturnValue(mockCreatedSaleDetail);
             mockSaleDetailRepository.save.mockResolvedValue(mockSavedSaleDetail);
 
-            // Obtenemos el resultado del servicio (ACC -Actuar)
+            // Obtenemos el resultado del servicio 
             const result = await saleDetailService.createSaleDetail(createSaleDetailDto)
 
-            // Verificamos el resulado (ASSERT - Verificar)
-            expect(result).toEqual(mockCreatedSaleDetail);
+            // Verificamos el resulado 
+            expect(result).toEqual(mockSavedSaleDetail);
 
             // Controla las llamadas al buscar el producto por id
             expect(mockProductService.findProductById)
@@ -126,15 +126,14 @@ describe('SaleDetailService', () => {
                 // Configuramos el mock del repositorio
                 mockSaleDetailRepository.find.mockResolvedValue(mockSaleDetails);
 
-                // Act
+                // Obtenemos el resultado de la función del servicio
                 const result = await saleDetailService.findAllSaleDetails();
 
-                // Assert
+                // Verificamos el resultado
                 expect(result).toEqual(mockSaleDetails);
                 expect(mockSaleDetailRepository.find).toHaveBeenCalledWith({
                 relations: ['product'],
                 });
-                
             })
         })
 

@@ -1,12 +1,17 @@
-import { Controller, Post, Get, Param, UploadedFile, UseInterceptors, ParseIntPipe } from '@nestjs/common';
+import { Controller, Post, Get, Param, UploadedFile, UseInterceptors, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ImagesService } from './images.service';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { RolesDecorator } from 'src/common/roles.decorator';
+import { Role } from 'src/common/roles.enum';
 
 @Controller('images')
+@UseGuards(AuthGuard)
 export class ImagesController {
   constructor(private readonly imagesService: ImagesService) {}
 
   @Post('upload/:productId')
+  @RolesDecorator(Role.Owner || Role.Admin)
   @UseInterceptors(FileInterceptor('file'))
   async uploadImage(
     @UploadedFile() file: Express.Multer.File,
