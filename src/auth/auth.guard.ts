@@ -4,15 +4,13 @@ import {
   Injectable,
   UnauthorizedException,
   ForbiddenException,
-  Inject,
-  forwardRef,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { CustomerService } from 'src/customer/customer.service';
 import { Role } from 'src/common/roles.enum';
-import { ROLES_KEY } from 'src/common/roles.decorator';
+import { ROLES_KEY } from 'src/common/decorators/roles.decorator';
 import { jwtConstants } from 'src/common/jwt/jwt.constants';
 import { RequestWithUser } from 'src/common/interfaces/request-user';
 
@@ -26,6 +24,15 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    // Verifica si el endpoint es público usando el decorador @Public
+    const isPublic = this.reflector.getAllAndOverride<boolean>('isPublic', [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+    if (isPublic) {
+      return true; // deja pasar sin token
+    }
+
     try {
       const request: RequestWithUser = context.switchToHttp().getRequest();
       const token = this.extractTokenFromHeader(request);

@@ -2,9 +2,10 @@ import { Body, Controller, Param, Post, Delete, Get, Patch, HttpCode, UseGuards 
 import { CreateProductTypeDto } from './dto/create-productType.dto';
 import { ProductTypeService } from './productType.service';
 import { PatchProductTypeDto } from './dto/patch-productType.dto';
-import { RolesDecorator } from 'src/common/roles.decorator';
+import { RolesDecorator } from 'src/common/decorators/roles.decorator';
 import { Role } from 'src/common/roles.enum';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { Public } from 'src/common/decorators/public.decorator';
 
 
 @Controller('tipoProducto')
@@ -19,11 +20,13 @@ export class ProductTypeController {
         return this.productTypeService.createProductType(productType) 
     }
 
+    @Public()
     @Get()
     getAllProductType(){
         return this.productTypeService.findAllProductType();
     }
 
+    @Public()
     @Get(':id')
     getProductType(@Param('id') idProductType){
         return this.productTypeService.findProductTypeById(idProductType);

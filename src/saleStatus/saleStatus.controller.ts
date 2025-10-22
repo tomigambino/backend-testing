@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards } 
 import { CreateSaleStateDto } from './dto/create-saleStatus.dto';
 import { SaleStateService } from './saleStatus.service';
 import { Role } from 'src/common/roles.enum';
-import { RolesDecorator } from 'src/common/roles.decorator';
+import { RolesDecorator } from 'src/common/decorators/roles.decorator';
 import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('estadoVenta')

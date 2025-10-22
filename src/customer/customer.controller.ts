@@ -3,7 +3,7 @@ import { CustomerService } from './customer.service';
 import { PatchCustomerDto } from './dto/patch-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { RolesDecorator } from 'src/common/roles.decorator';
+import { RolesDecorator } from 'src/common/decorators/roles.decorator';
 import { Role } from 'src/common/roles.enum';
 
 @Controller('cliente')

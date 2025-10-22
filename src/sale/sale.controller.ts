@@ -6,8 +6,9 @@ import { UpdateSaleDto } from './dto/update-sale.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { PaginatedSales } from 'src/common/interfaces/paginatedSales-interface';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { RolesDecorator } from 'src/common/roles.decorator';
+import { RolesDecorator } from 'src/common/decorators/roles.decorator';
 import { Role } from 'src/common/roles.enum';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @Controller('venta')
 @UseGuards(AuthGuard)
@@ -15,10 +16,11 @@ export class SaleController {
 
     constructor(private readonly saleService: SaleService){}
 
-   @Post()
-   async createSale(@Body() createSaleDto: CreateSaleDto): Promise<SaleEntity> {
-       return this.saleService.createSale(createSaleDto);
-   }
+    @Public()
+    @Post()
+    async createSale(@Body() createSaleDto: CreateSaleDto): Promise<SaleEntity> {
+        return this.saleService.createSale(createSaleDto);
+    }
 
     @Get()
     @RolesDecorator(Role.Owner || Role.Admin)

@@ -3,8 +3,9 @@ import { SaleDetailService } from './saleDetail.service';
 import { CreateSaleDetailDto } from './dto/create-saleDetail.dto';
 import { UpdateSaleDetailDto } from './dto/update-saleDetail.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { RolesDecorator } from 'src/common/roles.decorator';
+import { RolesDecorator } from 'src/common/decorators/roles.decorator';
 import { Role } from 'src/common/roles.enum';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @Controller('detalleVenta')
 @UseGuards(AuthGuard)
@@ -12,6 +13,7 @@ export class SaleDetailController {
 
     constructor(private saleDetailService: SaleDetailService) { }
 
+    @Public()
     @Post()
     createSaleDetail(@Body() createSaleDetailDto: CreateSaleDetailDto) {
         return this.saleDetailService.createSaleDetail(createSaleDetailDto);
