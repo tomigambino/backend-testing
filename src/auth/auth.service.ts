@@ -35,7 +35,8 @@ export class AuthService {
     const payload = { email: user.email };
     const accessToken = this.jwtService.generateToken(payload);
 
-    return { accessToken };
+    // Retornamos el token y el rol del usuario
+    return { accessToken, roleId: user.role };
   }
 
   async validateToken(token: string) {
