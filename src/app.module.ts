@@ -13,6 +13,7 @@ import { PayModule } from './pay/pay.module';
 import { ConfigModule } from '@nestjs/config';
 import { ImagesModule } from './images/images.module';
 import { AuthModule } from './auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -37,6 +38,7 @@ import { AuthModule } from './auth/auth.module';
     PayModule,
     ImagesModule,
     AuthModule,
+    JwtModule
   ],
   controllers: [AppController],
   providers: [AppService],

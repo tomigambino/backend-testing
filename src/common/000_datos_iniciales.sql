@@ -7,6 +7,12 @@ ALTER SEQUENCE IF EXISTS venta_id_seq RESTART WITH 1;
 ALTER SEQUENCE IF EXISTS detalle_venta_id_seq RESTART WITH 1;
 ALTER SEQUENCE IF EXISTS pagos_id_seq RESTART WITH 1;
 
+-- ===== ROLES =====
+INSERT INTO roles (nombre) VALUES
+('User'),
+('Owner'),
+('Admin');
+
 -- ===== CLIENTES =====
 INSERT INTO cliente (nombre, apellido, telefono, correo_electronico, contraseña, fecha_alta)
 VALUES

@@ -6,9 +6,10 @@ import { ProductTypeEntity } from "./productType"
 import { SaleEntity } from "./sale"
 import { PayEntity } from "./pay.entity"
 import { ImageEntity } from "./image.entity"
+import { RoleEntity } from "./roles.entity"
 
 export const entities = [
-    CustomerEntity, SaleDetailEntity, SaleStatusEntity,
+    RoleEntity, CustomerEntity, SaleDetailEntity, SaleStatusEntity,
     ProductEntity, ProductTypeEntity,
     SaleEntity, PayEntity, ImageEntity
 ]

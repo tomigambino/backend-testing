@@ -5,7 +5,7 @@ export class RoleEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column({name: 'nombre', unique: true })
   name: string; //Ej: Admin, user
 
 }
