@@ -46,6 +46,7 @@ export class ProductService {
 
     async findAllProducts() {
         return await this.productRepository.find({
+            where: { isActive: true },
             relations: ['productType', 'images'],
         });
     }
@@ -53,6 +54,7 @@ export class ProductService {
     async findProductsByPagination(paginationDto: PaginationDto) {
         const { page, limit } = paginationDto;
         const [data, total] = await this.productRepository.findAndCount({
+            where: { isActive: true },
             relations: ['productType', 'images'],
             order: { id: 'ASC' },
             skip: (page - 1) * limit,
@@ -65,7 +67,7 @@ export class ProductService {
         const { page, limit } = paginationDto;
         await this.productTypeService.findProductTypeById(productTypeId); // Verifica si el tipo de producto existe
         const [data, total] = await this.productRepository.findAndCount({
-            where: { productType: {id: productTypeId} },
+            where: { productType: { id: productTypeId }, isActive: true },
             relations: ['productType', 'images'],
             order: { id: 'ASC' },
             skip: (page - 1) * limit,
@@ -106,10 +108,9 @@ export class ProductService {
     }
 
     async deleteProduct(id: number) {
-        // Si se borra el producto, affected sera un number, caso contrario no lo sera
-        const {affected} = await this.productRepository.delete(id)
-        if( !affected ) {
-            throw new NotFoundException("Product Not Found");
-        }
+    const { affected } = await this.productRepository.update(id, { isActive: false });
+    if (!affected) {
+        throw new NotFoundException("Product Not Found");
+    }
     }
 }
