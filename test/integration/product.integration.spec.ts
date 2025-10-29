@@ -74,7 +74,6 @@ describe('Product integration tests', () => {
 
             const response = await request(app.getHttpServer())
                 .post(BASE_URL)
-                // YA NO NECESITAS EL TOKEN
                 .send(createProductDto)
                 .expect(201);
             
@@ -145,5 +144,47 @@ describe('Product integration tests', () => {
                 isActive: true,
             });
         })
+    })
+    describe('PATCH /producto/:id', () => {
+        it('Debería actualizar el precio y stock', async () => {
+            const productType = await productTypeRepository.findOneBy({ name: 'Paletas' });
+            if (!productType) throw new Error('ProductType no encontrado en BD');
+
+            const product = await productRepository.save({
+                productType,
+                name: 'Pelota Adidas',
+                description: 'Fútbol',
+                price: 20000,
+                stock: 10,
+                isActive: true,
+            });
+
+            expect(product.id).toBeDefined(); // confirmamos que se guardó
+
+            const res = await request(app.getHttpServer())
+                .patch(`/producto/${product.id}`)
+                .send({ price: 25000, stock: 8 })
+                .expect(200);
+
+            expect(res.body).toMatchObject({
+                id: product.id,
+                name: 'Pelota Adidas',
+                description: 'Fútbol',
+                price: 25000,
+                stock: 8,
+                isActive: true,
+            });
+
+            // Confirmamos que se actualizó en la BD
+            const updated = await productRepository.findOneBy({ id: product.id });
+            expect(updated?.stock).toBe(8);
+        })
+        it('Debería devolver 404 si el producto no existe', async () => {
+            await request(app.getHttpServer())
+                .put('/producto/9999')
+                .send({ price: 30000, stock: 5 })
+                .expect(404);
+        });
+
     })
 });
