@@ -8,16 +8,25 @@ export async function createTestingModule(
   imports: any[],
   providers: any[] = [],
   controllers: any[] = [],
+  overrides?: { guard?: any; guardMock?: any }, // AGREGAR ESTE PARÁMETRO
 ): Promise<INestApplication> {
-  const moduleFixture: TestingModule = await Test.createTestingModule({
+  let testModuleBuilder = Test.createTestingModule({
     imports: [TypeOrmModule.forRoot(testDbConfig), ...imports],
     providers,
     controllers,
-  }).compile();
+  });
+
+  // Si se proporciona un guard para mockear, lo reemplazamos
+  if (overrides?.guard && overrides?.guardMock) {
+    testModuleBuilder = testModuleBuilder
+      .overrideGuard(overrides.guard)
+      .useValue(overrides.guardMock);
+  }
+
+  const moduleFixture: TestingModule = await testModuleBuilder.compile();
 
   const app = moduleFixture.createNestApplication();
 
-  // Aplicamos los mismos pipes que en la app real
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
