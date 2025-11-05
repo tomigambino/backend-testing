@@ -61,9 +61,9 @@ export class ProductController {
         return this.productService.partialUpdateProduct(id, updateProductDto);
     }
 
+    @RolesDecorator(Role.Owner || Role.Admin)
     @Delete(':id')
     @HttpCode(204)
-    @RolesDecorator(Role.Owner || Role.Admin)
     deleteProduct(@Param('id') id: number) {
         return this.productService.deleteProduct(id);
     }
