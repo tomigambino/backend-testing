@@ -31,4 +31,13 @@ export class CustomerEntity extends BaseEntity{
         default: Role.User, // valor por defecto
     })
     role: Role;
+
+    @Column({ type: 'int', default: 0 })
+    failedLoginAttempts: number;
+    
+    @Column({ type: 'timestamp', nullable: true })
+    lockedUntil: Date | null;
+    
+    @Column({ type: 'timestamp', nullable: true })
+    lastFailedLoginAt: Date | null;
 }

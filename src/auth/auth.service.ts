@@ -25,17 +25,45 @@ export class AuthService {
   }
 
   async login(dto: LoginCustomerDto) {
-    // Verificamos si el usuario existe
     const user = await this.customerService.findCustomerByEmail(dto.email);
+    
+    if (!user) {
+      throw new UnauthorizedException('Credenciales inválidas');
+    }
 
+    // Verificar si la cuenta está bloqueada
+    if (user.lockedUntil && user.lockedUntil > new Date()) {
+      const lastMinutes = Math.ceil(
+        (user.lockedUntil.getTime() - Date.now()) / 60000
+      );
+      throw new UnauthorizedException(
+        `Cuenta bloqueada. Intenta en ${lastMinutes} minutos`
+      );
+    }
+
+    // Resetear bloqueo si ya expiró
+    if (user.lockedUntil && user.lockedUntil <= new Date()) {
+      await this.customerService.unlockAccount(user);
+    }
+
+    // Resetear intentos si pasó mucho tiempo
+    await this.customerService.resetAttemptsIfExpired(user);
+
+    // Verificar contraseña
     const isPasswordValid = await compare(dto.password, user.password);
-    if (!isPasswordValid) throw new UnauthorizedException('Credenciales inválidas');
+    
+    if (!isPasswordValid) {
+      await this.customerService.registerFailedLoginAttempt(user);
+      throw new UnauthorizedException('Credenciales inválidas');
+    }
 
-    // payload con email
+    // Login exitoso
+    await this.customerService.resetLoginAttempts(user);
+
+    // Generar token
     const payload = { email: user.email };
     const accessToken = this.jwtService.generateToken(payload);
 
-    // Retornamos el token y el rol del usuario
     return { accessToken, roleId: user.role };
   }
 
