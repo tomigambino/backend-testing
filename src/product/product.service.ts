@@ -38,7 +38,7 @@ export class ProductService {
 
         // Subimos las imágenes
         await this.imagesService.uploadMultipleImages(images, savedProduct.id);
-            
+
         return savedProduct;
     }
 
@@ -105,17 +105,38 @@ export class ProductService {
         return results
     }
 
-    async partialUpdateProduct(id: number, updateProductDto: PatchProductDto): Promise<ProductEntity> {
+    async partialUpdateProduct(
+        id: number, 
+        updateProductDto: PatchProductDto, 
+        images?: Express.Multer.File[]
+    ): Promise<ProductEntity> {
         const product = await this.findProductById(id);
 
+        // Actualizamos el tipo de producto si viene en el DTO
         if (updateProductDto.productTypeId) {
             const productType = await this.productTypeService.findProductTypeById(updateProductDto.productTypeId);
             product.productType = productType;
         }
 
+        // Aplicar los cambios del DTO
         Object.assign(product, updateProductDto);
 
-        return await this.productRepository.save(product);
+        // Guardamos el producto actualizado
+        const savedProduct = await this.productRepository.save(product);
+
+        // Si se enviaron nuevas imágenes, las subimos (no contemplamos eliminación de imágenes viejas por ahora)
+        if (images && images.length > 0) {
+            try {
+                await this.imagesService.validateFiles(images);
+                await this.imagesService.uploadMultipleImages(images, savedProduct.id);
+            } catch (error) {
+                // Si falla la subida de imágenes, no revertimos el producto
+                // porque ya estaba creado
+                throw new BadRequestException('Error al subir las imágenes');
+            }
+        }
+
+        return savedProduct;
     }
 
     async deleteProduct(id: number) {

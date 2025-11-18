@@ -66,8 +66,13 @@ export class ProductController {
 
     @Patch(':id')
     @RolesDecorator(Role.Owner || Role.Admin)
-    patchProduct(@Param('id') id: number, @Body() updateProductDto: PatchProductDto) {
-        return this.productService.partialUpdateProduct(id, updateProductDto);
+    @UseInterceptors(FilesInterceptor('images', 10))
+    async patchProduct(
+        @Param('id', ParseIntPipe) id: number, 
+        @Body() updateProductDto: PatchProductDto,
+        @UploadedFiles() images?: Express.Multer.File[]
+    ) {
+        return this.productService.partialUpdateProduct(id, updateProductDto, images);
     }
 
     @RolesDecorator(Role.Owner || Role.Admin)
