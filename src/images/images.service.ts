@@ -1,22 +1,23 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { supabase } from '../common/config/supabase.client';
 import { v4 as uuid } from 'uuid';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ImageEntity } from 'src/common/entities/image.entity';
-import { ProductService } from 'src/product/product.service';
 
 @Injectable()
 export class ImagesService {
+  
+  // NO CONTEMPLAMOS ROLLBACK EN CASO DE ERROR AL SUBIR IMAGENES POR PARTE DE SUPABASE (almacenamiento, entre otros)
+
   constructor(
     @InjectRepository(ImageEntity)
     private readonly imageRepo: Repository<ImageEntity>,
-    private readonly productService: ProductService,
   ) {}
 
   async uploadImage(file: Express.Multer.File, productId: number) {
     if (!file) {
-      throw new HttpException('No se recibió ningún archivo', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException('No se recibió ningún archivo');
     }
 
     const fileBuffer = file.buffer;
@@ -25,8 +26,6 @@ export class ImagesService {
     const fileExt = file.originalname.split('.').pop();
     const uniqueName = `${uuid()}.${fileExt}`;
     const storagePath = `products/${productId}/${uniqueName}`;
-
-    const product = await this.productService.findProductById(productId)
 
     // Sube la imagen a supabase
     const { data, error } = await supabase
@@ -38,7 +37,7 @@ export class ImagesService {
       });
 
     if (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      throw new BadRequestException(error.message);
     }
 
     const publicUrl = supabase
@@ -48,7 +47,7 @@ export class ImagesService {
 
     // Esto guarda los datos de la imagen en nuestra bd para luego poder llamarla
     const imageData = this.imageRepo.create({
-      product: product,
+      product: { id: productId },
       url: publicUrl,
       name: uniqueName,
       size: `${(file.size / 1024).toFixed(2)} KB`,
@@ -75,5 +74,33 @@ export class ImagesService {
     return image;
   }
 
+  async uploadMultipleImages(files: Express.Multer.File[], productId: number) {
+    const uploadedImages: ImageEntity[] = [];
 
+    for (const file of files) {
+        const imageData = await this.uploadImage(file, productId);
+        uploadedImages.push(imageData);
+    }
+
+    return uploadedImages;
+  }
+
+  async validateFiles(files: Express.Multer.File[]) {
+    const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
+    const maxSize = 5 * 1024 * 1024; // 5MB
+
+    for (const file of files) {
+        if (!file) {
+            throw new BadRequestException('No se recibió ningún archivo');
+        }
+
+        if (!allowedMimeTypes.includes(file.mimetype)) {
+            throw new BadRequestException(`Tipo de archivo no permitido: ${file.mimetype}. Solo se permiten: ${allowedMimeTypes.join(', ')}`)
+        }
+
+        if (file.size > maxSize) {
+            throw new BadRequestException(`El archivo ${file.originalname} es demasiado grande. Máximo: 5MB`);
+        }
+    }
+  }
 }

@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { ProductTypeService } from 'src/productType/productType.service';
 import { PatchProductDto } from './dto/patch-product.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { ImagesService } from 'src/images/images.service';
 
 @Injectable()
 export class ProductService {
@@ -13,22 +14,32 @@ export class ProductService {
     constructor(
         @InjectRepository(ProductEntity) private productRepository: Repository<ProductEntity>,
         private productTypeService: ProductTypeService,
+        private imagesService: ImagesService,
     ) { }
 
-    async createProduct(createProductDto: CreateProductDto) {
-        const productType = await this.productTypeService.findProductTypeById(createProductDto.productTypeId)
+    async createProduct(createProductDto: CreateProductDto, images: Express.Multer.File[]) {
+        const productType = await this.productTypeService.findProductTypeById(createProductDto.productTypeId);
 
-            // Creamos y guardamos el producto con los datos del DTO y las entidades de archivos, tipo de producto e insumos
-            const product = await this.productRepository.create({
+        // Creamos el producto
+        const product = this.productRepository.create({
             productType: productType,
             name: createProductDto.name,
             description: createProductDto.description,
             price: createProductDto.price,
             stock: createProductDto.stock,
             isActive: createProductDto.isActive
-            })
+        });
 
-            return await this.productRepository.save(product);
+        // Validamos que las imagenes sean validas. En caso de no serlo, lanza una excepción
+        await this.imagesService.validateFiles(images);
+
+        // Guardamos el producto primero
+        const savedProduct = await this.productRepository.save(product);
+
+        // Subimos las imágenes
+        await this.imagesService.uploadMultipleImages(images, savedProduct.id);
+            
+        return savedProduct;
     }
 
     async findProductById(id: number) {

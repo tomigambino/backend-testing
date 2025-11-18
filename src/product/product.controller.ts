@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Query, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { PatchProductDto } from './dto/patch-product.dto';
@@ -8,6 +8,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesDecorator } from 'src/common/decorators/roles.decorator';
 import { Role } from 'src/common/roles.enum';
 import { Public } from 'src/common/decorators/public.decorator';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('producto')
 @UseGuards(AuthGuard)
@@ -17,8 +18,16 @@ export class ProductController {
     
     @RolesDecorator(Role.Owner || Role.Admin)
     @Post()
-    createProduct(@Body() createProductDto: CreateProductDto) {
-        return this.productService.createProduct(createProductDto);
+    @UseInterceptors(FilesInterceptor('images', 10)) // Permite hasta 10 imágenes
+    async createProduct(
+        @Body() createProductDto: CreateProductDto,
+        @UploadedFiles() images?: Express.Multer.File[]
+    ) {
+        // Validamos que se subieron imágenes
+        if (!images || images.length === 0) {
+            throw new BadRequestException('Se deben subir al menos una imagen para el producto');
+        }
+        return this.productService.createProduct(createProductDto, images);
     }
 
     @Public()

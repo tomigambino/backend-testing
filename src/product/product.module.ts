@@ -5,12 +5,14 @@ import { ProductController } from "./product.controller";
 import { ProductService } from "./product.service";
 import { ProductTypeModule } from "src/productType/productType.module";
 import { AuthModule } from "src/auth/auth.module";
+import { ImagesModule } from "src/images/images.module";
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([ProductEntity]),
     ProductTypeModule,
-    AuthModule
+    AuthModule,
+    ImagesModule
   ],
   controllers: [ProductController],
   providers: [ProductService],
