@@ -97,48 +97,48 @@ export class CustomerService {
     }
 
     // Funciones para gestionar el bloqueo de cuentas por intentos fallidos de login
-    // Registrar un intento fallido de login
+    // Registramos un intento fallido de login
     async registerFailedLoginAttempt(customer: CustomerEntity): Promise<void> {
-    customer.failedLoginAttempts += 1;
-    customer.lastFailedLoginAt = new Date();
-    
-    // Bloquear después de 5 intentos
-    if (customer.failedLoginAttempts >= 5) {
-        customer.lockedUntil = new Date(Date.now() + 15 * 60000); // Bloqueamos por 15 minutos
-    }
-    
-    await this.customerRepository.save(customer);
+        customer.failedLoginAttempts += 1;
+        customer.lastFailedLoginAt = new Date();
+        
+        // Bloquear después de 5 intentos
+        if (customer.failedLoginAttempts >= 5) {
+            customer.lockedUntil = new Date(Date.now() + 15 * 60000); // Bloqueamos por 15 minutos
+        }
+        
+        await this.customerRepository.save(customer);
     }
 
-    // Resetear todos los datos de autenticación
+    // Reseteamos todos los datos de autenticación
     async resetLoginAttempts(customer: CustomerEntity): Promise<void> {
-    customer.failedLoginAttempts = 0;
-    customer.lockedUntil = null;
-    customer.lastFailedLoginAt = null;
-    await this.customerRepository.save(customer);
-    }
-
-    // Resetear solo el bloqueo cuando expira despues de 1 hora
-    async unlockAccount(customer: CustomerEntity): Promise<void> {
-    customer.failedLoginAttempts = 0;
-    customer.lockedUntil = null;
-    customer.lastFailedLoginAt = null;
-    await this.customerRepository.save(customer);
-    }
-
-    // Verificar si pasó mucho tiempo y resetear intentos
-    async resetAttemptsIfExpired(customer: CustomerEntity): Promise<boolean> {
-    if (!customer.lastFailedLoginAt) return false;
-    
-    const oneHourAgo = Date.now() - 60 * 60 * 1000;
-    
-    if (customer.lastFailedLoginAt.getTime() < oneHourAgo) {
         customer.failedLoginAttempts = 0;
+        customer.lockedUntil = null;
         customer.lastFailedLoginAt = null;
         await this.customerRepository.save(customer);
-        return true; // Se reseteó
     }
-    
-    return false; // No se reseteó
+
+    // Reseteamos solo el bloqueo cuando expira despues de 15 minutos
+    async unlockAccount(customer: CustomerEntity): Promise<void> {
+        customer.failedLoginAttempts = 0;
+        customer.lockedUntil = null;
+        customer.lastFailedLoginAt = null;
+        await this.customerRepository.save(customer);
+    }
+
+    // Verificamos si pasó mucho tiempo y reseteamos intentos
+    async resetAttemptsIfExpired(customer: CustomerEntity): Promise<boolean> {
+        if (!customer.lastFailedLoginAt) return false;
+        
+        const oneHourAgo = Date.now() - 60 * 60 * 1000;
+        
+        if (customer.lastFailedLoginAt.getTime() < oneHourAgo) {
+            customer.failedLoginAttempts = 0;
+            customer.lastFailedLoginAt = null;
+            await this.customerRepository.save(customer);
+            return true; // Se reseteó
+        }
+        
+        return false; // No se reseteó
     }
 }

@@ -26,12 +26,8 @@ export class AuthService {
 
   async login(dto: LoginCustomerDto) {
     const user = await this.customerService.findCustomerByEmail(dto.email);
-    
-    if (!user) {
-      throw new UnauthorizedException('Credenciales inválidas');
-    }
 
-    // Verificar si la cuenta está bloqueada
+    // Verificamos si la cuenta está bloqueada
     if (user.lockedUntil && user.lockedUntil > new Date()) {
       const lastMinutes = Math.ceil(
         (user.lockedUntil.getTime() - Date.now()) / 60000
@@ -41,15 +37,15 @@ export class AuthService {
       );
     }
 
-    // Resetear bloqueo si ya expiró
+    // Reseteamos el bloqueo si ya expiró
     if (user.lockedUntil && user.lockedUntil <= new Date()) {
       await this.customerService.unlockAccount(user);
     }
 
-    // Resetear intentos si pasó mucho tiempo
+    // Reseteamos los intentos si pasó mucho tiempo
     await this.customerService.resetAttemptsIfExpired(user);
 
-    // Verificar contraseña
+    // Verificamos la contraseña
     const isPasswordValid = await compare(dto.password, user.password);
     
     if (!isPasswordValid) {
